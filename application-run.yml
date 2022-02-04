@@ -1,0 +1,5 @@
+debug: false
+
+logging.level:
+  org.springframework: info
+  org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener: info

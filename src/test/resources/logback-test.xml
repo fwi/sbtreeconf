@@ -6,6 +6,9 @@
         <appender-ref ref="CONSOLE"/>
     </root>
     <logger name="com.github.fwi" level="debug"/>
-    <logger name="org.springframework.jdbc.datasource.init.ScriptUtils" level="debug"/>
+    <logger name="org.springframework" level="info"/>
+    <logger name="org.springframework.boot.test.context" level="warn"/>
+    <logger name="org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener" level="info"/>
     <logger name="org.springframework.test.context.support" level="warn"/>
+    <logger name="org.springframework.test.context.web" level="warn"/>
 </configuration>

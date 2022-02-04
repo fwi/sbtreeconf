@@ -1,5 +1,5 @@
-TreeConf
---------
+SBTreeConf
+----------
 
 Spring Boot application using a tree structure for configuration instead of classpath scanning.
 
@@ -9,5 +9,5 @@ To run using Maven:
 ```
 sdk use java 17.0.1-tem
 mvn test
-mvn spring-boot:run
+SPRING_PROFILES_ACTIVE=run mvn spring-boot:run
 ```
