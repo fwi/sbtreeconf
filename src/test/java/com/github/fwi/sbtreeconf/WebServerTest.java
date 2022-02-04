@@ -21,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 )
 @ActiveProfiles("test")
 @Slf4j
-public class WebServerTest extends WebTest {
+class WebServerTest extends WebTest {
 
 	@Test
 	@SneakyThrows

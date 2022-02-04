@@ -7,12 +7,13 @@ import org.springframework.context.annotation.Import;
 @Configuration
 @Import({
 	WebServerConfig.class, 
+	DbConfig.class,
 	IceCreamConfig.class,
 })
 public class AppMain {
 
 	public static void main(String[] args) {
-		SpringApplication.run(AppMain.class);
+		SpringApplication.run(AppMain.class, args);
 	}
 
 }

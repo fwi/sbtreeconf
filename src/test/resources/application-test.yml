@@ -1,1 +1,12 @@
 debug: false
+
+# Mimic postgreSQL database, see also comments in schema-h2.sql
+spring.datasource.url: jdbc:h2:mem:testdb;DATABASE_TO_LOWER=TRUE
+
+# only need a few connections for tests
+spring.datasource.hikari.minimumIdle: 1
+spring.datasource.hikari.maximumPoolSize: 2
+
+# platform determines the suffix in sql files to load (data-$platform.sql, schema-$platform.sql}
+spring.sql.init.platform: h2
+spring.sql.init.mode: embedded

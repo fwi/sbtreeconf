@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-public class FlavorCountTest {
+class FlavorCountTest {
 
 	@Test
 	void countFlavor() {
@@ -19,7 +19,7 @@ public class FlavorCountTest {
 				IceCreamDTO.builder().flavor("z").build(),
 				IceCreamDTO.builder().flavor("z").build()
 				);
-		var service = new IceCreamService();
+		var service = new IceCreamService(null);
 		assertEquals(service.countFlavor(iceCreams, "a"), 0);
 		assertEquals(service.countFlavor(iceCreams, "x"), 2);
 		assertEquals(service.countFlavor(iceCreams, "y"), 1);

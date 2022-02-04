@@ -1,5 +1,12 @@
 debug: false
 
+spring.datasource.url: jdbc:h2:mem:testdb;DATABASE_TO_LOWER=TRUE
+spring.datasource.hikari.minimumIdle: 1
+spring.datasource.hikari.maximumPoolSize: 2
+spring.sql.init.platform: h2
+spring.sql.init.mode: embedded
+
 logging.level:
   org.springframework: info
+  org.springframework.jdbc.datasource.init.ScriptUtils: debug
   org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener: info
