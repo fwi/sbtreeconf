@@ -1,4 +1,4 @@
-package com.github.fwi.treeconf;
+package com.github.fwi.sbtreeconf;
 
 import org.springframework.stereotype.Component;
 

@@ -1,4 +1,4 @@
-package com.github.fwi.treeconf;
+package com.github.fwi.sbtreeconf;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
