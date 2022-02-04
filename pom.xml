@@ -13,7 +13,7 @@
 	</parent>
 
 	<properties>
-		<start-class>com.github.fwi.treeconf.AppMain</start-class>
+		<start-class>com.github.fwi.sbtreeconf.AppMain</start-class>
 		<java.version>17</java.version>
 	</properties>
 
