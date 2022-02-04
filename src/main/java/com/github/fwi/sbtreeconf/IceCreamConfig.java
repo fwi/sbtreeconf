@@ -7,7 +7,12 @@ import org.springframework.context.annotation.Configuration;
 public class IceCreamConfig {
 
 	@Bean
-	IceCream iceCream() {
-		return new IceCream();
+	IceCreamService iceCreamService() {
+		return new IceCreamService();
+	}
+
+	@Bean
+	IceCreamController iceCreamController() {
+		return new IceCreamController(iceCreamService());
 	}
 }

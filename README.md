@@ -12,6 +12,7 @@ sdk use java 17.0.1-tem
 mvn test
 SPRING_PROFILES_ACTIVE=run mvn spring-boot:run
 # Test endpoint:
-curl -svv http://localhost:8080/v1/icecream/find
+curl -svv http://localhost:8080/api/v1/icecream/find | jq .
+curl -svv http://localhost:8080/api/v1/icecream/count/flavor/vanilla
 ```
 
