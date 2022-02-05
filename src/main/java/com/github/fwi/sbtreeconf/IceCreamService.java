@@ -1,10 +1,12 @@
 package com.github.fwi.sbtreeconf;
 
+import java.util.LinkedList;
 import java.util.List;
 
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
+
+import com.github.fwi.sbtreeconf.db.IceCreamRepo;
 
 import lombok.RequiredArgsConstructor;
 
@@ -12,11 +14,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class IceCreamService {
 
-	final JdbcTemplate jdbcTemplate;
-
+	final IceCreamRepo repo;
+	final ModelMapper mapper;
+	
 	List<IceCreamDTO> findAll() {
-		return jdbcTemplate.query("select id, flavor, shape from ice_cream", 
-				new BeanPropertyRowMapper<IceCreamDTO>(IceCreamDTO.class));
+		
+		var iceCreams = new LinkedList<IceCreamDTO>();
+		repo.findAll().forEach(r -> iceCreams.add(mapper.map(r, IceCreamDTO.class)));
+		return iceCreams;
 	}
 	
 	int countFlavor(String flavor) {

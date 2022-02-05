@@ -19,7 +19,7 @@ class FlavorCountTest {
 				IceCreamDTO.builder().flavor("z").build(),
 				IceCreamDTO.builder().flavor("z").build()
 				);
-		var service = new IceCreamService(null);
+		var service = new IceCreamService(null, null);
 		assertEquals(service.countFlavor(iceCreams, "a"), 0);
 		assertEquals(service.countFlavor(iceCreams, "x"), 2);
 		assertEquals(service.countFlavor(iceCreams, "y"), 1);

@@ -1,26 +1,31 @@
 package com.github.fwi.sbtreeconf;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.jdbc.JdbcTemplateAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import org.springframework.jdbc.core.JdbcTemplate;
+
+import com.github.fwi.sbtreeconf.db.IceCreamRepo;
 
 @Configuration
-@Import(JdbcTemplateAutoConfiguration.class)
 public class IceCreamConfig {
 
 	@Autowired
-	JdbcTemplate jdbcTemplate;
+	IceCreamRepo iceCreamRepo;
 	
 	@Bean
+	public ModelMapper modelMapper() {
+	    return new ModelMapper();
+	}
+
+	@Bean
 	IceCreamService iceCreamService() {
-		return new IceCreamService(jdbcTemplate);
+		return new IceCreamService(iceCreamRepo, modelMapper());
 	}
 
 	@Bean
 	IceCreamController iceCreamController() {
 		return new IceCreamController(iceCreamService());
 	}
+	
 }

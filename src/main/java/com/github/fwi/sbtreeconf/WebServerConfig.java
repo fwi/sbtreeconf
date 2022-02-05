@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Import;
 	ServletWebServerFactoryAutoConfiguration.class,
 	// Enables rest-controller functions.
 	DispatcherServletAutoConfiguration.class,
-	// Provides object to JSON vconversion for controller
+	// Provides object to JSON conversion for controller
 	WebMvcAutoConfiguration.class,
 })
 public class WebServerConfig {

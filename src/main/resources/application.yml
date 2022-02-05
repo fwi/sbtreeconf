@@ -1,2 +1,13 @@
 spring.main.banner-mode: off
 spring.sql.init.mode: never
+spring.jpa.open-in-view: false
+
+# stop Hibernate from dropping data
+spring.jpa.hibernate.ddl-auto: none
+
+# Disable auto-commit when using Hibernate for speeeed,
+# see also https://vladmihalcea.com/why-you-should-always-use-hibernate-connection-provider_disables_autocommit-for-resource-local-jpa-transactions/
+spring.datasource.hikari.auto-commit: false
+
+# Spring should set property below automatically when auto-commit is off.
+# hibernate.connection.provider_disables_autocommit: true

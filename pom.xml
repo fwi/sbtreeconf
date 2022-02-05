@@ -15,6 +15,7 @@
 	<properties>
 		<start-class>com.github.fwi.sbtreeconf.AppMain</start-class>
 		<java.version>17</java.version>
+		<modelmapper.version>3.0.0</modelmapper.version>
 	</properties>
 
 	<dependencies>
@@ -24,7 +25,12 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-jdbc</artifactId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.modelmapper</groupId>
+			<artifactId>modelmapper</artifactId>
+			<version>${modelmapper.version}</version>
 		</dependency>
 
 		<dependency>

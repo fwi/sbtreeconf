@@ -7,8 +7,22 @@
     </root>
     <logger name="com.github.fwi" level="debug"/>
     <logger name="org.springframework" level="info"/>
-    <logger name="org.springframework.boot.test.context" level="warn"/>
+
+    <logger name="org.hibernate" level="info"/>
+    <logger name="org.hibernate.jpa.internal.util.LogHelper" level="info"/>
+    
     <logger name="org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener" level="info"/>
+    <logger name="org.springframework.jdbc.datasource.init.ScriptUtils" level="info"/>
+    <logger name="org.hibernate.type.BasicTypeRegistry" level="info"/>
+
+    <logger name="org.springframework.boot.test.context" level="warn"/>
     <logger name="org.springframework.test.context.support" level="warn"/>
     <logger name="org.springframework.test.context.web" level="warn"/>
+
+		<!-- SQL logging -->
+    <logger name="org.springframework.jdbc.core.JdbcTemplate" level="debug"/>
+    <logger name="org.springframework.jdbc.core.StatementCreatorUtils" level="trace"/>
+    <logger name="org.hibernate.SQL" level="debug"/>
+    <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="trace"/>
+
 </configuration>
