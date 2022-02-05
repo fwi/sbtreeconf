@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import com.github.fwi.sbtreeconf.weberror.WebErrorDTO;
+
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,9 +32,9 @@ class WebServerTest extends WebTest {
 		log.debug("Testing web-server up at {}", getServerUrl());
 		var response = get(getServerUrl() + "/").then().assertThat()
 				.statusCode(HttpStatus.NOT_FOUND.value())
-				.extract().asString();
+				.extract().as(WebErrorDTO.class);
 		log.debug("Response: {}", response);
-		assertThat(response).contains("html");
+		assertThat(response.getError()).contains("Not Found");
 	}
 
 }

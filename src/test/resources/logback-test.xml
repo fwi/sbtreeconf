@@ -20,9 +20,10 @@
     <logger name="org.springframework.test.context.web" level="warn"/>
 
 		<!-- SQL logging -->
-    <logger name="org.springframework.jdbc.core.JdbcTemplate" level="debug"/>
-    <logger name="org.springframework.jdbc.core.StatementCreatorUtils" level="trace"/>
-    <logger name="org.hibernate.SQL" level="debug"/>
-    <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="trace"/>
+		<!-- Use trace-level in application-test.yml settings instead, far more effective. -->
+    <logger name="org.springframework.jdbc.core.JdbcTemplate" level="info"/>
+    <logger name="org.springframework.jdbc.core.StatementCreatorUtils" level="info"/>
+    <logger name="org.hibernate.SQL" level="info"/>
+    <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="info"/>
 
 </configuration>
