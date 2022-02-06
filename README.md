@@ -6,6 +6,15 @@ Spring Boot application using a tree structure for configuration instead of clas
 Using a tree structure for configuration facilitates and promotes test driven development.
 The branches in this project show this process where each branch is a step that delivers a functional and testable product.
 
+Branches:
+
+  - first-endpoint
+  - json-with-service
+  - db-with-jpa
+  - validation-and-error-handling
+  - auto-configuration-reporting
+  - actuator-endpoints
+
 To run using Maven:
 
 ```
@@ -47,6 +56,8 @@ curl -vv http:/localhost:8081/actuator/env | jq .
 
 ### To @Import or @ImportAutoConfiguration
 
-From https://blog.actorsfit.com/a?ID=00950-bf191026-a7da-4a2a-91c4-97f6f9e10bc1 (can't find original source):
+From "Improve startup performance through manual bean definition in Spring Boot" 
+([copy][(https://blog.actorsfit.com/a?ID=00950-bf191026-a7da-4a2a-91c4-97f6f9e10bc1) -
+can't find [original](Original: https://blog.csdn.net/qq_42882671/article/details/88031427) source):
 
 "The effect of @ImportAutoConfiguration is to postpone the processing of automatic configuration until all user configurations are loaded (for example, via @ComponentScan or receiving @Import)."
