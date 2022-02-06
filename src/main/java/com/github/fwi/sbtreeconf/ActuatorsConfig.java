@@ -44,7 +44,7 @@ import org.springframework.context.annotation.Import;
 	AvailabilityHealthContributorAutoConfiguration.class,
 	
 	// Add some data to the info-endpoint.
-	// PorjectInfo has to be before InfoContributor.
+	// ProjectInfo has to be before InfoContributor.
 	ProjectInfoAutoConfiguration.class,
 	InfoContributorAutoConfiguration.class,
 	

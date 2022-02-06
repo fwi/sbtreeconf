@@ -63,7 +63,7 @@ public class WebErrorResponse extends ResponseEntityExceptionHandler {
 	/**
 	 * Limit the information from all other errors (e.g. 500 internal server error).
 	 * Does not work for all errors (e.g. NPE - still gets logged by another method) 
-	 * but does work for conversion errors(e.g. Jackson conversion to JSON that fails).
+	 * but does work for conversion errors (e.g. Jackson conversion to JSON that fails).
 	 */
 	@Override
 	protected ResponseEntity<Object> handleExceptionInternal(

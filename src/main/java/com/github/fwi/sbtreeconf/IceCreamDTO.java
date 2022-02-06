@@ -19,9 +19,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class IceCreamDTO {
 	
-	// Z = +0100, XXX = +01:00 (JVM standard)
-	public static final String DATE_FORMAT_ISO_8601 = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX";
-
 	private Long id;
 	@NotBlank
 	private String flavor;

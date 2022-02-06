@@ -24,10 +24,14 @@ import lombok.extern.slf4j.Slf4j;
 )
 @ActiveProfiles("test")
 @Slf4j
-public class ActuatorsTest {
+class ActuatorsTest {
 	
 	@LocalManagementPort
 	int port;
+
+	String url() {
+		return "http://localhost:" + port + "/actuator";
+	}
 
 	@Test
 	void health() {
@@ -35,18 +39,18 @@ public class ActuatorsTest {
 		log.debug("Testing actuator health");
 		final var textMap = new TypeRef<Map<String, Object>>() {};
 
-		var actuators = get("http://localhost:" + port + "/actuator").then().assertThat()
+		var actuators = get(url()).then().assertThat()
 				.statusCode(HttpStatus.OK.value())
 				.extract().asString();
 		log.trace("Actuators online:\n{}", actuators);
 
-		var health = get("http://localhost:" + port + "/actuator/health").then().assertThat()
+		var health = get(url() + "/health").then().assertThat()
 			.statusCode(HttpStatus.OK.value())
 			.extract().as(textMap);
 		
 		assertThat(health.get("status")).isEqualTo("UP");
 
-		var info = get("http://localhost:" + port + "/actuator/info").then().assertThat()
+		var info = get(url() + "/info").then().assertThat()
 			.statusCode(HttpStatus.OK.value())
 			.extract().as(textMap);
 
@@ -54,7 +58,7 @@ public class ActuatorsTest {
 		assertThat(buildInfo).isNotNull();
 		assertThat(buildInfo.get("artifact")).isEqualTo("sbtreeconf");
 
-		var metric = get("http://localhost:" + port + "/actuator/metrics/system.cpu.count").then().assertThat()
+		var metric = get(url() + "/metrics/system.cpu.count").then().assertThat()
 				.statusCode(HttpStatus.OK.value())
 				.extract().as(textMap);
 		
@@ -63,7 +67,7 @@ public class ActuatorsTest {
 		assertThat(cpuCount).isEqualTo("system.cpu.count");
 		
 		// Prometheus is not activated in test environment.
-		get("http://localhost:" + port + "/actuator/prometheus").then().assertThat()
+		get(url() + "/prometheus").then().assertThat()
 			.statusCode(HttpStatus.NOT_FOUND.value())
 			.extract().asString();	
 	}
