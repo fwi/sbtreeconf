@@ -10,10 +10,6 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 public class WebValidationErrorDTO extends WebErrorDTO {
 
-	private String timestamp;
-	private String status;
-	private String error;
-	private String path;
 	private Object validations;
 
 	public WebValidationErrorDTO() {

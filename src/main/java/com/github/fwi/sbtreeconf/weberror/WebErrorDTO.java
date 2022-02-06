@@ -1,5 +1,7 @@
 package com.github.fwi.sbtreeconf.weberror;
 
+import java.time.OffsetDateTime;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.context.request.WebRequest;
 
@@ -10,7 +12,7 @@ public class WebErrorDTO {
 
 	public static final String URI_PREFIX = "uri=";
 
-	private String timestamp;
+	private OffsetDateTime timestamp;
 	private String status;
 	private String error;
 	private String path;
@@ -44,7 +46,7 @@ public class WebErrorDTO {
 	}
 
 	public void setTimeStampNow() {
-		setTimestamp(String.valueOf(System.currentTimeMillis()));
+		setTimestamp(OffsetDateTime.now());
 	}
 
 }
