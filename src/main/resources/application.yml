@@ -1,3 +1,4 @@
+spring.application.name: Spring Boot Tree Configuration with ice cream
 spring.main.banner-mode: off
 spring.sql.init.mode: never
 spring.jpa.open-in-view: false
