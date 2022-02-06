@@ -9,6 +9,8 @@ import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguratio
 import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration;
 import org.springframework.context.annotation.Configuration;
 
+// Option 1: webmvc
+
 @Configuration
 @ImportAutoConfiguration({
 	// Starts a Tomcat server.

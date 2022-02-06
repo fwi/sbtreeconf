@@ -11,3 +11,7 @@ spring.datasource.hikari.maximumPoolSize: 2
 # platform determines the suffix in sql files to load (data-$platform.sql, schema-$platform.sql}
 spring.sql.init.platform: h2
 spring.sql.init.mode: embedded
+
+# Make it random
+management.server.port: 0
+

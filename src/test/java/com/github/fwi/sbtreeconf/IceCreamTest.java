@@ -16,6 +16,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import com.github.fwi.sbtreeconf.db.DbConfig;
 import com.github.fwi.sbtreeconf.weberror.WebErrorDTO;
 import com.github.fwi.sbtreeconf.weberror.WebValidationErrorDTO;
 
@@ -25,7 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(
-	classes = AppMain.class, 
+	classes = {WebServerConfig.class, DbConfig.class, IceCreamConfig.class}, 
 	webEnvironment = WebEnvironment.RANDOM_PORT
 )
 @DirtiesContext
@@ -40,7 +41,6 @@ class IceCreamTest extends WebTest {
 	@Test
 	@SneakyThrows
 	void getIceCream() {
-		
 		
 		final var icList = new TypeRef<List<IceCreamDTO>>() {};
 		

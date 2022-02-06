@@ -30,6 +30,19 @@ java -Dloader.debug=true -Dloader.path=target/dependency,src/test/resources \
   -jar target/sbtreeconf-0.0.1-SNAPSHOT.jar --spring.profiles.active=run
 ```
 
+Actuator endpoints:
+
+```
+curl -svv http:/localhost:8081/actuator/ | jq .
+curl -svv http:/localhost:8081/actuator/health | jq .
+curl -svv http:/localhost:8081/actuator/health/liveness
+curl -svv http:/localhost:8081/actuator/health/readiness
+curl -svv http:/localhost:8081/actuator/info | jq .
+curl -svv http:/localhost:8081/actuator/metrics/system.cpu.count | jq .
+curl -svv http:/localhost:8081/actuator/prometheus
+curl -vv http:/localhost:8081/actuator/env | jq .
+```
+
 # Notes and references
 
 ### To @Import or @ImportAutoConfiguration
