@@ -20,6 +20,16 @@ curl -svv -X PUT -H 'Content-Type: application/json' \
   -d '{"flavor": "test", "shape": "round"}' http://localhost:8080/api/v1/icecream | jq .
 ```
 
+Start the app from executable jar-file (containing the `PropertiesLauncher`,
+see also [executable-jar](https://docs.spring.io/spring-boot/docs/current/reference/html/executable-jar.html))
+
+```
+mvn clean package -DskipTests
+mvn dependency:copy -Dartifact=com.h2database:h2:1.4.200
+java -Dloader.debug=true -Dloader.path=target/dependency,src/test/resources \
+  -jar target/sbtreeconf-0.0.1-SNAPSHOT.jar --spring.profiles.active=run
+```
+
 # Notes and references
 
 ### To @Import or @ImportAutoConfiguration

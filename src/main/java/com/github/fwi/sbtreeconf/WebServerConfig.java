@@ -15,9 +15,9 @@ import org.springframework.context.annotation.Configuration;
 	ServletWebServerFactoryAutoConfiguration.class,
 	// Enables rest-controller functions.
 	DispatcherServletAutoConfiguration.class,
-	// Setup JSON conversions
+	// Setup JSON conversions.
 	JacksonAutoConfiguration.class,
-	// Glue JSON configuration to RestController
+	// Glue JSON configuration to RestController.
 	// Among other things, converts LocalDateTime to String in web-response.
 	HttpMessageConvertersAutoConfiguration.class,
 	// For WebSockets:
