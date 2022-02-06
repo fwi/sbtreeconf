@@ -1,6 +1,7 @@
 package com.github.fwi.sbtreeconf;
 
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.servlet.DispatcherServletAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.servlet.ServletWebServerFactoryAutoConfiguration;
@@ -16,8 +17,13 @@ import org.springframework.context.annotation.Configuration;
 	DispatcherServletAutoConfiguration.class,
 	// Setup JSON conversions
 	JacksonAutoConfiguration.class,
+	// Glue JSON configuration to RestController
+	// Among other things, converts LocalDateTime to String in web-response.
+	HttpMessageConvertersAutoConfiguration.class,
+	// For WebSockets:
+	// CodecsAutoConfiguration.class,
 	ErrorMvcAutoConfiguration.class,
-	// Provides object to JSON conversion for controller
+	// Enable generic web-functions.
 	WebMvcAutoConfiguration.class,
 })
 public class WebServerConfig {
