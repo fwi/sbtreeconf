@@ -12,7 +12,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -29,7 +28,6 @@ import lombok.extern.slf4j.Slf4j;
 	classes = {WebServerConfig.class, DbConfig.class, IceCreamConfig.class}, 
 	webEnvironment = WebEnvironment.RANDOM_PORT
 )
-@DirtiesContext
 @ActiveProfiles("test")
 @Slf4j
 class IceCreamTest extends WebTest {

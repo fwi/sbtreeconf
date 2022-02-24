@@ -13,7 +13,6 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -36,7 +35,8 @@ import lombok.extern.slf4j.Slf4j;
  * Instead use @DirtiesContext to ensure database tests do not interfere with each other.
  * It is a little bit slower, but does give each test a clean work-environment.
  */
-@DirtiesContext
+// Replaced with "drop all objects" in schema-h2.sql
+// @org.springframework.test.annotation.DirtiesContext
 @ActiveProfiles("test")
 @Slf4j
 class DbTest {

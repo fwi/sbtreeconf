@@ -5,6 +5,11 @@
 -- For H2 database, mimic Postgresql with jdbc-url parameter "DATABASE_TO_LOWER=TRUE"
 -- so that unquoted names can be used in queries and DDL statements. 
 
+-- H2 statement to clear the database, alternative to using @DirtiesContext 
+-- for each test that uses the database.
+
+drop all objects;
+
 create table ice_cream (
 id         identity,
 created    timestamp not null default current_timestamp,

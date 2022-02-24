@@ -13,7 +13,6 @@ import org.springframework.boot.test.context.ConfigDataApplicationContextInitial
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -27,7 +26,6 @@ import lombok.extern.slf4j.Slf4j;
 )
 // For further testing:
 // @org.springframework.boot.autoconfigure.EnableAutoConfiguration
-@DirtiesContext
 @ActiveProfiles("test")
 @Slf4j
 class AcReportTest {

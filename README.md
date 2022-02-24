@@ -17,6 +17,7 @@ Branches:
   - validation-and-error-handling
   - auto-configuration-reporting
   - actuator-endpoints
+  - TODO: websecurity, asciidoctor, webflux
 
 To run using Maven:
 
