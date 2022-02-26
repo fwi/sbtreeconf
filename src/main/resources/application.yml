@@ -1,5 +1,8 @@
 spring.application.name: Spring Boot Tree Configuration with ice cream
 spring.main.banner-mode: off
+server.error.whitelabel.enabled: false
+server.error.path: /web-error
+
 spring.sql.init.mode: never
 spring.jpa.open-in-view: false
 

@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.github.fwi.sbtreeconf.db.IceCreamRepo;
-import com.github.fwi.sbtreeconf.weberror.WebErrorResponse;
 
 @Configuration
 @ImportAutoConfiguration( {
@@ -29,11 +28,6 @@ public class IceCreamConfig {
 		return new IceCreamService(iceCreamRepo, modelMapper());
 	}
 
-	@Bean
-	WebErrorResponse webErrorResponse() { 
-		return new WebErrorResponse(); 
-	}
-	
 	@Bean
 	IceCreamController iceCreamController() {
 		return new IceCreamController(iceCreamService());

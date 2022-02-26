@@ -1,6 +1,8 @@
 package com.github.fwi.sbtreeconf.weberror;
 
-import java.util.stream.Collectors;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -15,6 +17,10 @@ import org.springframework.web.util.WebUtils;
 
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Handles errors thrown by Controllers.
+ * General errors (e.g. invalid URLs) are handled by the {@link WebErrorController}.
+ */
 @ControllerAdvice
 @Slf4j
 public class WebErrorResponse extends ResponseEntityExceptionHandler {
@@ -50,13 +56,14 @@ public class WebErrorResponse extends ResponseEntityExceptionHandler {
 
 		log.debug("Validation failed for {}", request);
 		var error = new WebValidationErrorDTO(request, status);
-		error.setValidations(
-				ex.getBindingResult()
-				.getFieldErrors()
-				.stream()
-				.map(f -> new String[] {f.getField(), f.getDefaultMessage()})
-				.collect(Collectors.toList())
-				);
+		var fieldErrors = new HashMap<String, List<String>>();
+		for (var fe : ex.getBindingResult().getFieldErrors()) {
+			if (!fieldErrors.containsKey(fe.getField())) {
+				fieldErrors.put(fe.getField(), new LinkedList<String>());
+			}
+			fieldErrors.get(fe.getField()).add(fe.getDefaultMessage());
+		}
+		error.setValidations(fieldErrors);
 		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
 	}
 

@@ -42,8 +42,11 @@ public class IceCreamController {
 	}
 
 	@GetMapping(path = COUNT_PATH)
-	public int flavorCount(@RequestParam String flavor) {
+	public long flavorCount(@RequestParam(required = false) String flavor) {
 		
+		if (flavor == null) {
+			return service.count();
+		}
 		if (StringUtils.isBlank(flavor)) {
 			throw new SafeResponseStatusException(HttpStatus.BAD_REQUEST, "Flavor must have a value.");
 		}

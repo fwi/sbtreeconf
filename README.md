@@ -17,14 +17,15 @@ Branches:
   - validation-and-error-handling
   - auto-configuration-reporting
   - actuator-endpoints
-  - TODO: websecurity, asciidoctor, webflux
+  - apidocs
+  - TODO: websecurity, webflux
 
 To run using Maven:
 
 ```
 sdk use java 17.0.1-tem
 mvn test
-mvn spring-boot:run -Prun
+mvn spring-boot:run -P run
 # Test endpoints:
 curl -svv http://localhost:8080/api/v1/icecream | jq .
 curl -svv http://localhost:8080/api/v1/icecream/1 | jq .
@@ -37,11 +38,16 @@ Start the app from executable jar-file (containing the `PropertiesLauncher`,
 see also [executable-jar](https://docs.spring.io/spring-boot/docs/current/reference/html/executable-jar.html))
 
 ```
+# Build fast without tests or ApiDocs
+mvn clean package -Dmaven.test.skip -DskipDocs
+# Build with ApiDocs
 mvn clean package -DskipTests
 mvn dependency:copy -Dartifact=com.h2database:h2:1.4.200
 java -Dloader.debug=true -Dloader.path=target/dependency,src/test/resources \
   -jar target/sbtreeconf-0.0.1-SNAPSHOT.jar --spring.profiles.active=run
 ```
+
+The apidocs can be found under http://localhost:8080/docs/index.html
 
 Actuator endpoints:
 
@@ -55,6 +61,16 @@ curl -svv http:/localhost:8081/actuator/metrics/system.cpu.count | jq .
 curl -svv http:/localhost:8081/actuator/prometheus
 curl -vv http:/localhost:8081/actuator/env | jq .
 ```
+
+### ApiDocs
+
+ApiDocs can be compiled separately using:
+
+```
+mvn package -P apidocs
+```
+
+The resulting html-documentation is available at `target/classes/static/docs`
 
 # Notes and references
 

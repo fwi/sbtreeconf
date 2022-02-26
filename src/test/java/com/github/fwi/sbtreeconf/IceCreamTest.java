@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,9 +31,9 @@ import lombok.extern.slf4j.Slf4j;
 )
 @ActiveProfiles("test")
 @Slf4j
-class IceCreamTest extends WebTest {
+public class IceCreamTest extends WebTest {
 
-	static final String JSON = "application/json";
+	public static final String JSON = "application/json";
 	
 	String url() { return getServerUrl() + IceCreamController.BASE_PATH; }
 	
@@ -142,8 +143,8 @@ class IceCreamTest extends WebTest {
 			.extract().as(WebValidationErrorDTO.class);
 		
 		assertThat(validationError.getValidations())
-			.isInstanceOf(List.class).asList().element(0)
-			.asList().containsExactly("flavor", "must not be blank");
+			.isInstanceOf(Map.class)
+			.extracting("flavor").asList().containsExactly("must not be blank");
 	}
 
 }

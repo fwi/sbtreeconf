@@ -32,10 +32,16 @@ public class IceCreamService {
 		return repo.findById(id).map(r -> mapper.map(r, IceCreamDTO.class)).orElse(null);
 	}
 
-	int countFlavor(String flavor) {
-		return countFlavor(findAll(), flavor);
+	long count() {
+		return repo.count();
+	}
+
+	long countFlavor(String flavor) {
+		return repo.countByFlavor(flavor);
+		// return countFlavor(findAll(), flavor);
 	}
 	
+	// this is just as an example, normally repo would be updated with filter-query.
 	int countFlavor(List<IceCreamDTO> iceCreams, String flavor) {
 		return (int) iceCreams.stream().filter(i -> i.getFlavor().equals(flavor)).count();
 	}

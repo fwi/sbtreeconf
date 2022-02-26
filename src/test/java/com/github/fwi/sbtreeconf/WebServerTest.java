@@ -30,7 +30,7 @@ class WebServerTest extends WebTest {
 	void webRoot() {
 
 		log.debug("Testing web-server up at {}", getServerUrl());
-		var response = get(getServerUrl() + "/").then().assertThat()
+		var response = get(getServerUrl() + "/bla-not-here").then().assertThat()
 				.statusCode(HttpStatus.NOT_FOUND.value())
 				.extract().as(WebErrorDTO.class);
 		log.debug("Response: {}", response);

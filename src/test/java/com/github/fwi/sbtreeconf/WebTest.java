@@ -2,12 +2,12 @@ package com.github.fwi.sbtreeconf;
 
 import org.springframework.boot.web.server.LocalServerPort;
 
-class WebTest {
+public class WebTest {
 
 	@LocalServerPort
 	int port;
 
-	String getServerUrl() {
+	public String getServerUrl() {
 		return "http://localhost:" + port;
 	}
 }

@@ -1,22 +1,23 @@
 package com.github.fwi.sbtreeconf.weberror;
 
-import java.time.OffsetDateTime;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.web.context.request.WebRequest;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import lombok.Data;
 
 @Data
+@JsonInclude(Include.NON_EMPTY)
 public class WebErrorDTO {
 
 	public static final String URI_PREFIX = "uri=";
 
-	private OffsetDateTime timestamp;
-	private String status;
-	private String error;
-	private String path;
-	private String reason;
+	private int status; // 404 
+	private String error; // not found
+	private String path; // /path/with/tupo
+	private String reason; // additional information from controller
 
 	public WebErrorDTO() {
 		// no-op
@@ -40,13 +41,8 @@ public class WebErrorDTO {
 			path = path.substring(URI_PREFIX.length());
 		}
 		setPath(path);
-		setTimeStampNow();
-		setStatus(String.valueOf(status.value()));
+		setStatus(status.value());
 		setError(status.getReasonPhrase());
-	}
-
-	public void setTimeStampNow() {
-		setTimestamp(OffsetDateTime.now());
 	}
 
 }

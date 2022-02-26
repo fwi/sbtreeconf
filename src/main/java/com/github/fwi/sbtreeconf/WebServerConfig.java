@@ -7,7 +7,11 @@ import org.springframework.boot.autoconfigure.web.servlet.DispatcherServletAutoC
 import org.springframework.boot.autoconfigure.web.servlet.ServletWebServerFactoryAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import com.github.fwi.sbtreeconf.weberror.WebErrorResponse;
+import com.github.fwi.sbtreeconf.weberror.WebErrorController;
 
 // Option 1: webmvc
 
@@ -30,4 +34,19 @@ import org.springframework.context.annotation.Configuration;
 })
 public class WebServerConfig {
 	
+	@Bean
+	WebErrorResponse webErrorResponse() { 
+		return new WebErrorResponse(); 
+	}
+
+	@Bean
+	WebErrorController webErrorController() {
+		return new WebErrorController();
+	}
+	
+	@Bean
+	HomeController homeController() {
+		return new HomeController();
+	}
+
 }
