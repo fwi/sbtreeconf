@@ -19,12 +19,12 @@ class FlavorCountTest {
 	void countFlavor() {
 		
 		var iceCreams = List.of(
-				IceCreamDTO.builder().flavor("x").build(),
-				IceCreamDTO.builder().flavor("y").build(),
-				IceCreamDTO.builder().flavor("z").build(),
-				IceCreamDTO.builder().flavor("x").build(),
-				IceCreamDTO.builder().flavor("z").build(),
-				IceCreamDTO.builder().flavor("z").build()
+				IceCreamResponse.builder().flavor("x").build(),
+				IceCreamResponse.builder().flavor("y").build(),
+				IceCreamResponse.builder().flavor("z").build(),
+				IceCreamResponse.builder().flavor("x").build(),
+				IceCreamResponse.builder().flavor("z").build(),
+				IceCreamResponse.builder().flavor("z").build()
 				);
 		var service = new IceCreamService(null, null);
 		assertEquals(service.countFlavor(iceCreams, "a"), 0);

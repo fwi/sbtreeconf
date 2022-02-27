@@ -10,6 +10,8 @@ import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.HttpStatus;
@@ -35,13 +37,16 @@ public class IceCreamTest extends WebTest {
 
 	public static final String JSON = "application/json";
 	
+	@Autowired
+	ModelMapper mapper;
+	
 	String url() { return getServerUrl() + IceCreamController.BASE_PATH; }
 	
 	@Test
 	@SneakyThrows
 	void getIceCream() {
 		
-		final var icList = new TypeRef<List<IceCreamDTO>>() {};
+		final var icList = new TypeRef<List<IceCreamResponse>>() {};
 		
 		log.debug("Testing icecream web-access.");
 		var response = get(url()).then().assertThat()
@@ -78,7 +83,7 @@ public class IceCreamTest extends WebTest {
 
 		var one = get(url() + "/1").then().assertThat()
 			.statusCode(HttpStatus.OK.value())
-			.extract().as(IceCreamDTO.class);
+			.extract().as(IceCreamResponse.class);
 		log.debug("One: {}", one);
 
 		assertThat(one.getId()).isEqualTo(1);
@@ -88,36 +93,37 @@ public class IceCreamTest extends WebTest {
 		final var oldDate = OffsetDateTime.parse("2022-02-05T21:00:00+01");
 		// Providing a modified date does not give an error,
 		// the value is just ignored.
-		var newIceCream = IceCreamDTO.builder()
-				.id(null).flavor("Neapolitan").shape("waffle")
-				.modified(oldDate).build();
+		var newIceCream = IceCreamRequest.builder()
+				.id(null).flavor("Neapolitan").shape("waffle").build();
 		var inserted = given().contentType(JSON).body(newIceCream)
 			.put(url()).then().assertThat()
 			.statusCode(HttpStatus.OK.value())
-			.extract().as(IceCreamDTO.class);
+			.extract().as(IceCreamResponse.class);
 
 		log.debug("Created ice-cream {}", inserted);
 		assertThat(inserted.getId()).isPositive();
 		assertThat(inserted).extracting(
-				IceCreamDTO::getFlavor,
-				IceCreamDTO::getShape
+				IceCreamResponse::getFlavor,
+				IceCreamResponse::getShape
 				).containsExactly("Neapolitan", "waffle");
 		assertThat(inserted).extracting(
-				IceCreamDTO::getCreated,
-				IceCreamDTO::getModified
+				IceCreamResponse::getCreated,
+				IceCreamResponse::getModified
 				).doesNotContainNull();
 		assertThat(oldDate).isBefore(inserted.getModified());
 		
-		one.setShape("sandwich");
-		var updated = given().contentType(JSON).body(one)
+		var updateIceCream = mapper.map(one, IceCreamRequest.class);
+		updateIceCream.setShape("sandwich");
+		log.debug("Update ice-cream {}", updateIceCream);
+		var updated = given().contentType(JSON).body(updateIceCream)
 				.put(url()).then().assertThat()
 				.statusCode(HttpStatus.OK.value())
-				.extract().as(IceCreamDTO.class);
+				.extract().as(IceCreamResponse.class);
 			
 		assertThat(updated).extracting(
-				IceCreamDTO::getId, 
-				IceCreamDTO::getFlavor,
-				IceCreamDTO::getShape
+				IceCreamResponse::getId, 
+				IceCreamResponse::getFlavor,
+				IceCreamResponse::getShape
 				).containsExactly(1l, "vanilla", "sandwich");
 
 		var negative = inserted.toBuilder().id(-1L).build();

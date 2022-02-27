@@ -32,12 +32,12 @@ public class IceCreamController {
 	final IceCreamService service;
 	
 	@GetMapping
-	public List<IceCreamDTO> findAll() {
+	public List<IceCreamResponse> findAll() {
 		return service.findAll();
 	}
 
 	@GetMapping(path = "/{id}")
-	public IceCreamDTO findOne(@PathVariable long id) {
+	public IceCreamResponse findOne(@PathVariable long id) {
 		return service.findOne(id);
 	}
 
@@ -54,7 +54,7 @@ public class IceCreamController {
 	}
 	
 	@PutMapping
-	public IceCreamDTO upsert(@Valid @RequestBody IceCreamDTO iceCream) {
+	public IceCreamResponse upsert(@Valid @RequestBody IceCreamRequest iceCream) {
 		return service.upsert(iceCream);
 	}
 	

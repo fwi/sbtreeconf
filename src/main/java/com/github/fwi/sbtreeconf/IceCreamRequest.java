@@ -1,7 +1,5 @@
 package com.github.fwi.sbtreeconf;
 
-import java.time.OffsetDateTime;
-
 import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -21,13 +19,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(Include.NON_EMPTY)
-public class IceCreamDTO {
+public class IceCreamRequest {
 	
 	private Long id;
 	@NotBlank
 	private String flavor;
 	private String shape;
-	
-	private OffsetDateTime created;
-	private OffsetDateTime modified;
 }

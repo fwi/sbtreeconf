@@ -23,7 +23,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.github.fwi.sbtreeconf.IceCreamConfig;
 import com.github.fwi.sbtreeconf.IceCreamController;
-import com.github.fwi.sbtreeconf.IceCreamDTO;
+import com.github.fwi.sbtreeconf.IceCreamRequest;
 import com.github.fwi.sbtreeconf.WebServerConfig;
 import com.github.fwi.sbtreeconf.WebTest;
 import com.github.fwi.sbtreeconf.db.DbConfig;
@@ -81,14 +81,14 @@ public class IceCreamApiDocs extends WebTest {
 			.get(url() + IceCreamController.COUNT_PATH).then().assertThat()
 			.statusCode(HttpStatus.BAD_REQUEST.value());
 		
-		var createIceCream = IceCreamDTO.builder()
+		var createIceCream = IceCreamRequest.builder()
 				.id(null).flavor("Neapolitan").shape("waffle").build();
 		given(spec).filter(document("new-ice-cream"))
 			.contentType(JSON).body(createIceCream)
 			.put(url()).then().assertThat()
 			.statusCode(HttpStatus.OK.value());
 		
-		var updateIceCream = IceCreamDTO.builder()
+		var updateIceCream = IceCreamRequest.builder()
 				.id(1L).flavor("vanillaa").shape("sandwich").build();
 		given(spec).filter(document("update-ice-cream"))
 			.contentType(JSON).body(updateIceCream)

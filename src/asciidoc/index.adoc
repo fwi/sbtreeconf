@@ -15,7 +15,7 @@ Ice Cream requests and responses.
 Retrieve one ice-cream.
 
 *Request* +
-include::{snippets}/{sid}/request-uri.adoc[]
+include::{snippets}/{sid}/request-path.adoc[]
 include::{snippets}/{sid}/path-parameters.adoc[]
 
 *Response* +
@@ -30,7 +30,7 @@ include::{snippets}/one-ice-cream/response-body.adoc[]
 Amount of ice-creams.
 
 *Request* +
-include::{snippets}/{sid}/request-uri.adoc[]
+include::{snippets}/{sid}/request-path.adoc[]
 
 *Response* +
 When no record is found, ``0`` will be returned.
@@ -43,7 +43,7 @@ include::{snippets}/{sid}/response-body.adoc[]
 Amount of ice-creams with one flavor.
 
 *Request* +
-include::{snippets}/{sid}/request-uri.adoc[]
+include::{snippets}/{sid}/request-path.adoc[]
 include::{snippets}/{sid}/request-parameters.adoc[]
 
 *Response* +
@@ -57,7 +57,7 @@ include::{snippets}/{sid}/response-body.adoc[]
 Example of a response-error.
 
 *Request* +
-include::{snippets}/{sid}/request-uri.adoc[]
+include::{snippets}/{sid}/request-path.adoc[]
 
 *Response* +
 include::{snippets}/{sid}/http-response.adoc[]
@@ -69,7 +69,7 @@ include::{snippets}/{sid}/http-response.adoc[]
 Insert a new ice-cream.
 
 *Request* +
-include::{snippets}/{sid}/request-uri.adoc[]
+include::{snippets}/{sid}/request-path.adoc[]
 The body must not contain an ``id``.
 include::{snippets}/{sid}/request-body.adoc[]
 
@@ -83,7 +83,7 @@ include::{snippets}/{sid}/response-body.adoc[]
 Update an ice-cream.
 
 *Request* +
-include::{snippets}/{sid}/request-uri.adoc[]
+include::{snippets}/{sid}/request-path.adoc[]
 The body must contain an ``id``.
 include::{snippets}/{sid}/request-body.adoc[]
 
@@ -98,7 +98,7 @@ include::{snippets}/{sid}/response-body.adoc[]
 Invalid values for fields get a validation error in the response.
 
 *Request* +
-include::{snippets}/{sid}/request-uri.adoc[]
+include::{snippets}/{sid}/request-path.adoc[]
 include::{snippets}/{sid}/request-body.adoc[]
 
 *Response* +
@@ -111,7 +111,7 @@ include::{snippets}/{sid}/http-response.adoc[]
 Get me all the ice-cream.
 
 *Request* +
-include::{snippets}/{sid}/request-uri.adoc[]
+include::{snippets}/{sid}/request-path.adoc[]
 
 *Response* +
 include::{snippets}/{sid}/response-body.adoc[]

@@ -19,17 +19,17 @@ public class IceCreamService {
 	final IceCreamRepo repo;
 	final ModelMapper mapper;
 	
-	TypeMap<IceCreamDTO, IceCreamEntity> dto2entity;
+	TypeMap<IceCreamResponse, IceCreamEntity> dto2entity;
 
-	List<IceCreamDTO> findAll() {
+	List<IceCreamResponse> findAll() {
 		
-		var iceCreams = new LinkedList<IceCreamDTO>();
-		repo.findAll().forEach(r -> iceCreams.add(mapper.map(r, IceCreamDTO.class)));
+		var iceCreams = new LinkedList<IceCreamResponse>();
+		repo.findAll().forEach(r -> iceCreams.add(mapper.map(r, IceCreamResponse.class)));
 		return iceCreams;
 	}
 	
-	IceCreamDTO findOne(long id) {
-		return repo.findById(id).map(r -> mapper.map(r, IceCreamDTO.class)).orElse(null);
+	IceCreamResponse findOne(long id) {
+		return repo.findById(id).map(r -> mapper.map(r, IceCreamResponse.class)).orElse(null);
 	}
 
 	long count() {
@@ -42,11 +42,11 @@ public class IceCreamService {
 	}
 	
 	// this is just as an example, normally repo would be updated with filter-query.
-	int countFlavor(List<IceCreamDTO> iceCreams, String flavor) {
+	int countFlavor(List<IceCreamResponse> iceCreams, String flavor) {
 		return (int) iceCreams.stream().filter(i -> i.getFlavor().equals(flavor)).count();
 	}
 	
-	IceCreamDTO upsert(IceCreamDTO iceCream) {
+	IceCreamResponse upsert(IceCreamRequest iceCream) {
 		
 		IceCreamEntity record = null;
 		if (iceCream.getId() == null) {
@@ -59,7 +59,7 @@ public class IceCreamService {
 			mapper.map(iceCream, record);
 			record = repo.save(record);
 		}
-		return mapper.map(record, IceCreamDTO.class);
+		return mapper.map(record, IceCreamResponse.class);
 	}
 
 }

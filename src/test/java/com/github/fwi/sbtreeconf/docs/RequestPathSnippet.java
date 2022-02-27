@@ -11,7 +11,7 @@ import org.springframework.restdocs.snippet.TemplatedSnippet;
 
 /**
  * Template for this snippet is stored at
- * <br><tt>${project.basedir}/src/test/resources/org/springframework/restdocs/templates/asciidoctor</tt>
+ * <br><tt>${project.basedir}/src/test/resources/org/springframework/restdocs/templates/asciidoctor/request-path.snippet</tt>
  */
 public class RequestPathSnippet extends TemplatedSnippet {
 
@@ -19,7 +19,7 @@ public class RequestPathSnippet extends TemplatedSnippet {
 	// https://github.com/ePages-de/restdocs-wiremock/blob/master/wiremock/src/main/java/com/epages/restdocs/WireMockJsonSnippet.java
 	
     public RequestPathSnippet() {
-        super("request-uri", null);
+        super("request-path", null);
     }
 
     @Override
