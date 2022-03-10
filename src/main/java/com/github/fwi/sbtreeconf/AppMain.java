@@ -14,7 +14,7 @@ import com.github.fwi.sbtreeconf.db.DbConfig;
 @Import({
 	AppBootConfig.class,
 	WebServerConfig.class, 
-	// Does not for for now, see comments in class.
+	// Does not work for now, see comments in config-class.
 	// WebfluxServerConfig.class,
 	DbConfig.class,
 	IceCreamConfig.class,

@@ -2,6 +2,7 @@
 :toc: left
 :revnumber: {project-version}
 :icons: font
+:source-highlighter: highlight.js
 :sectlinks:
 :sectids!:
 :sectnums:
@@ -20,7 +21,7 @@ include::{snippets}/{sid}/path-parameters.adoc[]
 
 *Response* +
 When no record is found, an empty response will be returned.
-include::{snippets}/one-ice-cream/response-body.adoc[]
+include::{snippets}/{sid}/response-body.adoc[]
 
 :sid: count-ice-cream
 [#{sid}]
