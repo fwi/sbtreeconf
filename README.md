@@ -51,7 +51,7 @@ java -Dloader.debug=true -Dloader.path=target/dependency,src/test/resources \
 
 The apidocs can be found under http://localhost:8080/docs/index.html
 
-Actuator endpoints require a user with role `manage`.
+All actuator endpoints, except the health-endpoint, require a user with role `manage`.
 
 ```
 curl -u manager:manages -svv http:/localhost:8081/actuator/ | jq .
