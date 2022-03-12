@@ -1,7 +1,7 @@
 package com.github.fwi.sbtreeconf;
 
-import static io.restassured.RestAssured.get;
-import static io.restassured.RestAssured.delete;
+//import static io.restassured.RestAssured.get;
+//import static io.restassured.RestAssured.delete;
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -9,7 +9,10 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,38 +22,44 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.github.fwi.sbtreeconf.db.DbConfig;
 import com.github.fwi.sbtreeconf.weberror.WebErrorDTO;
 import com.github.fwi.sbtreeconf.weberror.WebValidationErrorDTO;
 
 import io.restassured.common.mapper.TypeRef;
+import io.restassured.specification.RequestSpecification;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(
-	classes = {WebServerConfig.class, DbConfig.class, IceCreamConfig.class}, 
+	classes = WebTest.Config.class, 
 	webEnvironment = WebEnvironment.RANDOM_PORT
 )
 @ActiveProfiles("test")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Slf4j
 public class IceCreamTest extends WebTest {
 
-	public static final String JSON = "application/json";
-	
+	static final TypeRef<List<IceCreamResponse>> icList = new TypeRef<>() {};
+
 	@Autowired
 	ModelMapper mapper;
 	
 	String url() { return getServerUrl() + IceCreamController.BASE_PATH; }
-	
+
+	RequestSpecification givenUser() {
+		return given().auth()
+		  .preemptive()
+		  .basic(USER, USER_PASS);
+	}
+
 	@Test
+	@Order(1)
 	@SneakyThrows
-	void getIceCream() {
-		
-		final var icList = new TypeRef<List<IceCreamResponse>>() {};
+	void readIceCream() {
 		
 		log.debug("Testing icecream web-access.");
-		var response = get(url()).then().assertThat()
+		var response = givenUser().get(url()).then().assertThat()
 			.statusCode(HttpStatus.OK.value())
 			.extract().as(icList);
 
@@ -58,7 +67,7 @@ public class IceCreamTest extends WebTest {
 		assertThat(response).as("Have special flavor")
 			.filteredOn(i -> i.getFlavor().equals("Neapolitan")).isNotEmpty();
 		
-		var count = given()
+		var count = givenUser()
 				.queryParam("flavor", "vanilla")
 				.get(url() + IceCreamController.COUNT_PATH).then().assertThat()
 				.statusCode(HttpStatus.OK.value())
@@ -66,7 +75,7 @@ public class IceCreamTest extends WebTest {
 
 		assertThat(count).isEqualTo(2);
 
-		var errorDto = given()
+		var errorDto = givenUser()
 				.queryParam("flavor", "")
 				.get(url() + IceCreamController.COUNT_PATH).then()
 				.log().all().and()
@@ -76,19 +85,25 @@ public class IceCreamTest extends WebTest {
 
 		assertThat(errorDto.getReason()).contains("Flavor must have a value");
 		
-		var none = get(url() + "/0").then().assertThat()
+		var none = givenUser().get(url() + "/0").then().assertThat()
 				.statusCode(HttpStatus.OK.value())
 				.extract().asString();
 
 		assertThat(none).isEmpty();
 
-		var one = get(url() + "/1").then().assertThat()
+		var one = givenUser().get(url() + "/1").then().assertThat()
 			.statusCode(HttpStatus.OK.value())
 			.extract().as(IceCreamResponse.class);
 		log.debug("One: {}", one);
 
 		assertThat(one.getId()).isEqualTo(1);
-		
+	}
+	
+	@Test
+	@Order(2)
+	@SneakyThrows
+	void writeIceCream() {
+
 		log.debug("Testing icecream storage.");
 		
 		final var oldDate = OffsetDateTime.parse("2022-02-05T21:00:00+01");
@@ -96,7 +111,7 @@ public class IceCreamTest extends WebTest {
 		// the value is just ignored.
 		var newIceCream = IceCreamRequest.builder()
 				.id(null).flavor("Neapolitan").shape("waffle").build();
-		var inserted = given().contentType(JSON).body(newIceCream)
+		var inserted = givenUser().contentType(JSON).body(newIceCream)
 			.put(url()).then().assertThat()
 			.statusCode(HttpStatus.OK.value())
 			.extract().as(IceCreamResponse.class);
@@ -113,10 +128,9 @@ public class IceCreamTest extends WebTest {
 				).doesNotContainNull();
 		assertThat(oldDate).isBefore(inserted.getModified());
 		
-		var updateIceCream = mapper.map(one, IceCreamRequest.class);
-		updateIceCream.setShape("sandwich");
+		var updateIceCream = IceCreamRequest.builder().id(1L).flavor("vanilla").shape("sandwich").build();
 		log.debug("Update ice-cream {}", updateIceCream);
-		var updated = given().contentType(JSON).body(updateIceCream)
+		var updated = givenUser().contentType(JSON).body(updateIceCream)
 				.put(url()).then().assertThat()
 				.statusCode(HttpStatus.OK.value())
 				.extract().as(IceCreamResponse.class);
@@ -128,36 +142,42 @@ public class IceCreamTest extends WebTest {
 				).containsExactly(1l, "vanilla", "sandwich");
 
 		var negative = inserted.toBuilder().id(-1L).build();
-		none = given().contentType(JSON).body(negative)
+		var none = givenUser().contentType(JSON).body(negative)
 				.put(url()).then().assertThat()
 				.statusCode(HttpStatus.OK.value())
 				.extract().asString();
 		
 		assertThat(none).isEmpty();
 		
-		response = get(url()).then().assertThat()
+		var response = givenUser().get(url()).then().assertThat()
 				.statusCode(HttpStatus.OK.value())
 				.extract().as(icList);
 
 		assertThat(response).as("One more ice-cream stored.").hasSize(4);
-		
+	}
+
+	@Test
+	@Order(3)
+	@SneakyThrows
+	void deleteIceCream() {
+
 		log.debug("Testing delete function.");
 		
-		var oneDeleted = delete(url() + "/1").then().assertThat()
+		var oneDeleted = givenUser().delete(url() + "/1").then().assertThat()
 				.statusCode(HttpStatus.OK.value())
 				.extract().as(IceCreamResponse.class);
-		log.debug("Deleted one: {}", one);
+		log.debug("Deleted one: {}", oneDeleted);
 
 		assertThat(oneDeleted.getId()).isEqualTo(1);
 
-		var noneDeleted = get(url() + "/1").then().assertThat()
+		var noneDeleted = givenUser().get(url() + "/1").then().assertThat()
 				.statusCode(HttpStatus.OK.value())
 				.extract().asString();
 
 		assertThat(noneDeleted).isEmpty();
 		
 		log.debug("Testing error codes");
-		var validationError = given().contentType(JSON).body("{\"test\": \"invalid\"}")
+		var validationError = givenUser().contentType(JSON).body("{\"test\": \"invalid\"}")
 			.put(url()).then()
 			.log().all().and()
 			.assertThat()

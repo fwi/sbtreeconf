@@ -1,6 +1,5 @@
 package com.github.fwi.sbtreeconf.docs;
 
-import static com.github.fwi.sbtreeconf.IceCreamTest.JSON;
 import static io.restassured.RestAssured.given;
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
@@ -21,12 +20,9 @@ import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.github.fwi.sbtreeconf.IceCreamConfig;
 import com.github.fwi.sbtreeconf.IceCreamController;
 import com.github.fwi.sbtreeconf.IceCreamRequest;
-import com.github.fwi.sbtreeconf.WebServerConfig;
 import com.github.fwi.sbtreeconf.WebTest;
-import com.github.fwi.sbtreeconf.db.DbConfig;
 
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.specification.RequestSpecification;
@@ -34,7 +30,7 @@ import lombok.SneakyThrows;
 
 @ExtendWith({SpringExtension.class, RestDocumentationExtension.class})
 @SpringBootTest(
-	classes = {WebServerConfig.class, DbConfig.class, IceCreamConfig.class}, 
+	classes = WebTest.Config.class, 
 	webEnvironment = WebEnvironment.RANDOM_PORT
 )
 @ActiveProfiles("test")
@@ -57,55 +53,61 @@ public class IceCreamApiDocs extends WebTest {
 				).build();
 	}
 	
+	RequestSpecification givenUser() {
+		return given(spec).auth()
+		  .preemptive()
+		  .basic(USER, USER_PASS);
+	}
+
 	@Test
 	@SneakyThrows
 	void iceCreamDocs() {
 		
-		given(spec).filter(document("one-ice-cream", pathParameters( 
+		givenUser().filter(document("one-ice-cream", pathParameters( 
 				parameterWithName("id").description("Identifier"))))
 			.get(url() + "/{id}", 1).then().assertThat()
 			.statusCode(HttpStatus.OK.value());
 		
-		given(spec).filter(document("count-ice-cream"))
+		givenUser().filter(document("count-ice-cream"))
 			.get(url() + IceCreamController.COUNT_PATH).then().assertThat()
 			.statusCode(HttpStatus.OK.value());
 
-		given(spec).filter(document("count-ice-cream-flavor", requestParameters(
+		givenUser().filter(document("count-ice-cream-flavor", requestParameters(
 				parameterWithName("flavor").description("Flavor"))))
 			.queryParam("flavor", "vanilla")
 			.get(url() + IceCreamController.COUNT_PATH).then().assertThat()
 			.statusCode(HttpStatus.OK.value());
 
-		given(spec).filter(document("bad-ice-cream-request"))
+		givenUser().filter(document("bad-ice-cream-request"))
 			.queryParam("flavor", " ")
 			.get(url() + IceCreamController.COUNT_PATH).then().assertThat()
 			.statusCode(HttpStatus.BAD_REQUEST.value());
 		
 		var createIceCream = IceCreamRequest.builder()
 				.id(null).flavor("Neapolitan").shape("waffle").build();
-		given(spec).filter(document("new-ice-cream"))
+		givenUser().filter(document("new-ice-cream"))
 			.contentType(JSON).body(createIceCream)
 			.put(url()).then().assertThat()
 			.statusCode(HttpStatus.OK.value());
 		
 		var updateIceCream = IceCreamRequest.builder()
 				.id(1L).flavor("vanillaa").shape("sandwich").build();
-		given(spec).filter(document("update-ice-cream"))
+		givenUser().filter(document("update-ice-cream"))
 			.contentType(JSON).body(updateIceCream)
 			.put(url()).then().assertThat()
 			.statusCode(HttpStatus.OK.value());
 
-		given(spec).filter(document("bad-ice-cream-update-request"))
+		givenUser().filter(document("bad-ice-cream-update-request"))
 			.contentType(JSON).body("{\"test\": \"invalid\"}")
 			.put(url()).then().assertThat()
 			.statusCode(HttpStatus.BAD_REQUEST.value());
 		
-		given(spec).filter(document("delete-ice-cream", pathParameters( 
+		givenUser().filter(document("delete-ice-cream", pathParameters( 
 				parameterWithName("id").description("Identifier"))))
 			.delete(url() + "/{id}", 1).then().assertThat()
 			.statusCode(HttpStatus.OK.value());
 
-		given(spec).filter(document("all-ice-cream"))
+		givenUser().filter(document("all-ice-cream"))
 			.get(url()).then().assertThat()
 			.statusCode(HttpStatus.OK.value());
 	}

@@ -1,20 +1,19 @@
-package com.github.fwi.sbtreeconf;
+package com.github.fwi.sbtreeconf.security;
 
 import static io.restassured.RestAssured.get;
 import static io.restassured.RestAssured.given;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.github.fwi.sbtreeconf.db.DbConfig;
-import com.github.fwi.sbtreeconf.security.WebSecurityConfig;
+import com.github.fwi.sbtreeconf.IceCreamController;
+import com.github.fwi.sbtreeconf.IceCreamRequest;
+import com.github.fwi.sbtreeconf.WebTest;
 
 import io.restassured.specification.RequestSpecification;
 import lombok.SneakyThrows;
@@ -22,18 +21,13 @@ import lombok.extern.slf4j.Slf4j;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(
-	classes = {WebServerConfig.class, WebSecurityConfig.class, DbConfig.class, IceCreamConfig.class}, 
+	classes = WebTest.Config.class, 
 	webEnvironment = WebEnvironment.RANDOM_PORT
 )
 @ActiveProfiles("test")
 @Slf4j
 public class IceCreamSecurityTest extends WebTest {
 
-	public static final String JSON = "application/json";
-	
-	@Autowired
-	ModelMapper mapper;
-	
 	String url() { return getServerUrl() + IceCreamController.BASE_PATH; }
 	
 	RequestSpecification authRead() {

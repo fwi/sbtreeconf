@@ -61,16 +61,13 @@ public class IceCreamController {
 	@Secured("ROLE_WRITE")
 	@PutMapping
 	public IceCreamResponse upsert(@Valid @RequestBody IceCreamRequest iceCream, Principal user) {
-		// Some tests run without security.
-		var userName = (user == null ? "system" : user.getName());
-		return service.upsert(iceCream, userName);
+		return service.upsert(iceCream, user.getName());
 	}
 
 	@Secured("ROLE_DELETE")
 	@DeleteMapping(path = "/{id}")
 	public IceCreamResponse delete(@PathVariable long id, Principal user) {
-		var userName = (user == null ? "system" : user.getName());
-		return service.delete(id, userName);
+		return service.delete(id, user.getName());
 	}
 
 }
