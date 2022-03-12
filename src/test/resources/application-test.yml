@@ -15,3 +15,23 @@ spring.sql.init.mode: embedded
 # Make it random
 management.server.port: 0
 
+icecream.access.users:
+- name: reader
+  password: reads
+  roles:
+  - read
+- name: writer
+  password: writes
+  roles:
+  - read
+  - write
+- name: operator
+  password: operates
+  roles:
+  - read
+  - write
+  - delete
+- name: manager
+  password: manages
+  roles:
+  - manage

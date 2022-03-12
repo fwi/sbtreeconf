@@ -60,10 +60,15 @@ public class IceCreamEntity {
 	@Generated(GenerationTime.ALWAYS)
 	private OffsetDateTime modified;
 
+	@Getter
+	@Setter
+	@Column(name = "modified_by")
+	private String modifiedBy;
+
 	@Override
 	public String toString() {
 		return getClass().getName() + " - id [" + getId() 
 		+ "], flavor: [" + getFlavor() + "], shape: [" + getShape() + "]"
-		+ "], created: [" + getCreated() + "], modified: [" + getModified() + "]";
+		+ "], created: [" + getCreated() + "], modified: [" + getModified() + "], modified by: [" + getModifiedBy() +"]";
 	}
 }

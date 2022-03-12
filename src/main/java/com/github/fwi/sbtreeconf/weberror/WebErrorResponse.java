@@ -4,10 +4,13 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.validation.ConstraintViolationException;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -32,6 +35,27 @@ public class WebErrorResponse extends ResponseEntityExceptionHandler {
 		var error = new WebErrorDTO(request, ex.getStatus());
 		error.setReason(ex.getReason());
 		return new ResponseEntity<>(error, ex.getStatus());
+	}
+
+	@ExceptionHandler(AccessDeniedException.class)
+	public ResponseEntity<Object> controllerError(AccessDeniedException ex, WebRequest request) {
+		
+		var error = new WebErrorDTO(request, HttpStatus.UNAUTHORIZED);
+		error.setReason(ex.getMessage());
+		log.debug("Access denied for request at {}", error.getPath());
+		return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
+	}
+
+	/**
+	 * Error thrown when a path-variable in controller is not valid.
+	 */
+	@ExceptionHandler(ConstraintViolationException.class)
+	public ResponseEntity<Object> controllerError(ConstraintViolationException ex, WebRequest request) {
+		
+		var error = new WebErrorDTO(request, HttpStatus.BAD_REQUEST);
+		error.setReason(ex.getMessage());
+		log.debug("Invalid value for request at {}", error.getPath());
+		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
 	}
 
 	/**

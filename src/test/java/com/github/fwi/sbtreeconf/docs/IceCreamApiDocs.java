@@ -100,6 +100,11 @@ public class IceCreamApiDocs extends WebTest {
 			.put(url()).then().assertThat()
 			.statusCode(HttpStatus.BAD_REQUEST.value());
 		
+		given(spec).filter(document("delete-ice-cream", pathParameters( 
+				parameterWithName("id").description("Identifier"))))
+			.delete(url() + "/{id}", 1).then().assertThat()
+			.statusCode(HttpStatus.OK.value());
+
 		given(spec).filter(document("all-ice-cream"))
 			.get(url()).then().assertThat()
 			.statusCode(HttpStatus.OK.value());

@@ -12,3 +12,23 @@ logging.level:
   org.springframework: info
   org.springframework.jdbc.datasource.init.ScriptUtils: info
   org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener: info
+
+icecream.access.users:
+- name: reader
+  password: reads
+  roles:
+  - read
+- name: writer
+  password: writes
+  roles:
+  - write
+- name: operator
+  password: operates
+  roles:
+  - read
+  - write
+  - delete
+- name: manager
+  password: manages
+  roles:
+  - manage

@@ -1,6 +1,7 @@
 package com.github.fwi.sbtreeconf;
 
 import static io.restassured.RestAssured.get;
+import static io.restassured.RestAssured.delete;
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -139,6 +140,21 @@ public class IceCreamTest extends WebTest {
 				.extract().as(icList);
 
 		assertThat(response).as("One more ice-cream stored.").hasSize(4);
+		
+		log.debug("Testing delete function.");
+		
+		var oneDeleted = delete(url() + "/1").then().assertThat()
+				.statusCode(HttpStatus.OK.value())
+				.extract().as(IceCreamResponse.class);
+		log.debug("Deleted one: {}", one);
+
+		assertThat(oneDeleted.getId()).isEqualTo(1);
+
+		var noneDeleted = get(url() + "/1").then().assertThat()
+				.statusCode(HttpStatus.OK.value())
+				.extract().asString();
+
+		assertThat(noneDeleted).isEmpty();
 		
 		log.debug("Testing error codes");
 		var validationError = given().contentType(JSON).body("{\"test\": \"invalid\"}")

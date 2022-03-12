@@ -18,7 +18,8 @@ Branches:
   - auto-configuration-reporting
   - actuator-endpoints
   - apidocs
-  - TODO: websecurity, webflux
+  - websecurity
+  - TODO: webflux
 
 To run using Maven:
 
@@ -27,11 +28,12 @@ sdk use java 17.0.1-tem
 mvn test
 mvn spring-boot:run -P run
 # Test endpoints:
-curl -svv http://localhost:8080/api/v1/icecream | jq .
-curl -svv http://localhost:8080/api/v1/icecream/1 | jq .
-curl -svv http://localhost:8080/api/v1/icecream/count?flavor="vanilla"
-curl -svv -X PUT -H 'Content-Type: application/json' \
+curl -u reader:reads -svv http://localhost:8080/api/v1/icecream | jq .
+curl -u reader:reads -svv http://localhost:8080/api/v1/icecream/1 | jq .
+curl -u reader:reads -svv http://localhost:8080/api/v1/icecream/count?flavor="vanilla"
+curl -u writer:writes -svv -X PUT -H 'Content-Type: application/json' \
   -d '{"flavor": "test", "shape": "round"}' http://localhost:8080/api/v1/icecream | jq .
+curl -u operator:operates -svv -X DELETE http://localhost:8080/api/v1/icecream/1 | jq .
 ```
 
 Start the app from executable jar-file (containing the `PropertiesLauncher`,
@@ -49,17 +51,18 @@ java -Dloader.debug=true -Dloader.path=target/dependency,src/test/resources \
 
 The apidocs can be found under http://localhost:8080/docs/index.html
 
-Actuator endpoints:
+Actuator endpoints require a user with role `manage`.
 
 ```
-curl -svv http:/localhost:8081/actuator/ | jq .
+curl -u manager:manages -svv http:/localhost:8081/actuator/ | jq .
+# Health requires no acces.
 curl -svv http:/localhost:8081/actuator/health | jq .
 curl -svv http:/localhost:8081/actuator/health/liveness
 curl -svv http:/localhost:8081/actuator/health/readiness
-curl -svv http:/localhost:8081/actuator/info | jq .
-curl -svv http:/localhost:8081/actuator/metrics/system.cpu.count | jq .
-curl -svv http:/localhost:8081/actuator/prometheus
-curl -vv http:/localhost:8081/actuator/env | jq .
+curl -u manager:manages -svv http:/localhost:8081/actuator/info | jq .
+curl -u manager:manages -svv http:/localhost:8081/actuator/metrics/system.cpu.count | jq .
+curl -u manager:manages -svv http:/localhost:8081/actuator/prometheus
+curl -u manager:manages -vv http:/localhost:8081/actuator/env | jq .
 ```
 
 ### ApiDocs

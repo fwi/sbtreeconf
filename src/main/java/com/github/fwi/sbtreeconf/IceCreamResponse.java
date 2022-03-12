@@ -27,4 +27,5 @@ public class IceCreamResponse {
 
 	private OffsetDateTime created;
 	private OffsetDateTime modified;
+	private String modifiedBy;
 }

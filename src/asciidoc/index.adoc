@@ -9,6 +9,8 @@
 
 Ice Cream requests and responses.
 
+All requests that only return data require role ``read``.
+
 :sid: one-ice-cream
 [#{sid}]
 == One ice cream
@@ -68,6 +70,7 @@ include::{snippets}/{sid}/http-response.adoc[]
 == Create ice cream
 
 Insert a new ice-cream.
+Requires role ``write``.
 
 *Request* +
 include::{snippets}/{sid}/request-path.adoc[]
@@ -82,6 +85,7 @@ include::{snippets}/{sid}/response-body.adoc[]
 == Update ice cream
 
 Update an ice-cream.
+Requires role ``write``.
 
 *Request* +
 include::{snippets}/{sid}/request-path.adoc[]
@@ -104,6 +108,20 @@ include::{snippets}/{sid}/request-body.adoc[]
 
 *Response* +
 include::{snippets}/{sid}/http-response.adoc[]
+
+:sid: delete-ice-cream
+[#{sid}]
+== Delete one ice cream
+
+Delete one ice cream.
+Requires role ``delete``.
+
+*Request* +
+include::{snippets}/{sid}/request-path.adoc[]
+
+*Response* +
+When no record is found to delete, an empty response will be returned.
+include::{snippets}/{sid}/response-body.adoc[]
 
 :sid: all-ice-cream
 [#{sid}]

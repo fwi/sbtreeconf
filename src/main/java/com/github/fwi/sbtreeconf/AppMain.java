@@ -9,11 +9,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 import com.github.fwi.sbtreeconf.db.DbConfig;
+import com.github.fwi.sbtreeconf.security.WebSecurityConfig;
 
 @Configuration
 @Import({
 	AppBootConfig.class,
-	WebServerConfig.class, 
+	WebServerConfig.class,
+	WebSecurityConfig.class,
 	// Does not work for now, see comments in config-class.
 	// WebfluxServerConfig.class,
 	DbConfig.class,

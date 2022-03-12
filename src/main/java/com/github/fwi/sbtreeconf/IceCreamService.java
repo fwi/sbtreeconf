@@ -11,9 +11,11 @@ import com.github.fwi.sbtreeconf.db.IceCreamEntity;
 import com.github.fwi.sbtreeconf.db.IceCreamRepo;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class IceCreamService {
 
 	final IceCreamRepo repo;
@@ -46,11 +48,13 @@ public class IceCreamService {
 		return (int) iceCreams.stream().filter(i -> i.getFlavor().equals(flavor)).count();
 	}
 	
-	IceCreamResponse upsert(IceCreamRequest iceCream) {
+	IceCreamResponse upsert(IceCreamRequest iceCream, String user) {
 		
 		IceCreamEntity record = null;
 		if (iceCream.getId() == null) {
-			record = repo.save(mapper.map(iceCream, IceCreamEntity.class));
+			record = mapper.map(iceCream, IceCreamEntity.class);
+			record.setModifiedBy(user);
+			record = repo.save(record);
 		} else {
 			record = repo.findById(iceCream.getId()).orElse(null);
 			if (record == null) {
@@ -60,6 +64,16 @@ public class IceCreamService {
 			record = repo.save(record);
 		}
 		return mapper.map(record, IceCreamResponse.class);
+	}
+
+	public IceCreamResponse delete(long id, String user) {
+		
+		var deleted = findOne(id);
+		if (deleted != null) {
+			log.info("Deleting ice-cream {} (user {})", id, user);
+			repo.deleteById(id);
+		}
+		return deleted;
 	}
 
 }
