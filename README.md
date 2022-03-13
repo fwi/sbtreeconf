@@ -25,9 +25,12 @@ To run using Maven:
 
 ```
 sdk use java 17.0.1-tem
-mvn test
 mvn spring-boot:run -P run
-# Test endpoints:
+# To run all test, including apidocs:
+mvn test
+# To run just one test:
+mvn test -Dtest=IceCreamMockTest -DskipDocs
+# Endpoints:
 curl -u reader:reads -svv http://localhost:8080/api/v1/icecream | jq .
 curl -u reader:reads -svv http://localhost:8080/api/v1/icecream/1 | jq .
 # Also show response time in seconds
@@ -37,8 +40,8 @@ curl -u writer:writes -svv -X PUT -H 'Content-Type: application/json' \
 curl -u operator:operates -svv -X DELETE http://localhost:8080/api/v1/icecream/1 | jq .
 ```
 
-Start the app from executable jar-file (containing the `PropertiesLauncher`,
-see also [executable-jar](https://docs.spring.io/spring-boot/docs/current/reference/html/executable-jar.html))
+To start the app from executable jar-file (containing the `PropertiesLauncher`,
+see also [executable-jar](https://docs.spring.io/spring-boot/docs/current/reference/html/executable-jar.html)):
 
 ```
 # Build fast without tests or ApiDocs

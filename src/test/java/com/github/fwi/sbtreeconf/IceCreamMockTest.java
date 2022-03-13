@@ -7,7 +7,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
+import org.springframework.boot.test.autoconfigure.web.servlet.MockMvcAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Configuration;
@@ -32,7 +34,22 @@ import lombok.extern.slf4j.Slf4j;
 @SpringBootTest(
 	classes = IceCreamMockTest.Config.class 
 )
-@AutoConfigureMockMvc
+// @org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
+// Will import the following (from spring.factories in spring-boot-test-autoconfigure):
+/*
+# AutoConfigureMockMvc auto-configuration imports
+org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc=\
+org.springframework.boot.test.autoconfigure.web.servlet.MockMvcAutoConfiguration,\
+org.springframework.boot.test.autoconfigure.web.servlet.MockMvcWebClientAutoConfiguration,\
+org.springframework.boot.test.autoconfigure.web.servlet.MockMvcWebDriverAutoConfiguration,\
+org.springframework.boot.autoconfigure.security.oauth2.client.servlet.OAuth2ClientAutoConfiguration,\
+org.springframework.boot.autoconfigure.security.oauth2.resource.servlet.OAuth2ResourceServerAutoConfiguration,\
+org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration,\
+org.springframework.boot.autoconfigure.security.servlet.SecurityFilterAutoConfiguration,\
+org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration,\
+org.springframework.boot.test.autoconfigure.web.servlet.MockMvcSecurityConfiguration,\
+org.springframework.boot.test.autoconfigure.web.reactive.WebTestClientAutoConfiguration
+ */
 @ActiveProfiles("test")
 @Slf4j
 public class IceCreamMockTest {
@@ -41,6 +58,10 @@ public class IceCreamMockTest {
 	@Import({
 		WebServerConfig.class,
 		IceCreamConfig.class
+	})
+	@ImportAutoConfiguration({
+		MockMvcAutoConfiguration.class,
+		SecurityAutoConfiguration.class,
 	})
 	static class Config {
 		
@@ -65,13 +86,17 @@ public class IceCreamMockTest {
 		log.debug("Starting mock test.");
 		
 		// WebSecurityConfig was not loaded by Config above,
-		// but MockMvc picks up on the Secured annotation anyway.
+		// but SecurityAutoConfiguration was and that sets a minimum security.
+		
 		RestAssuredMockMvc.get(IceCreamController.BASE_PATH + "/1")
 			.then().statusCode(HttpStatus.UNAUTHORIZED.value());
 		
 		var iceCream = IceCreamResponse.builder().flavor("mock").shape("mvc").build();
 		Mockito.when(icService.findOne(1)).thenReturn(iceCream);
+		
+		// Actual values do not matter, as long as there is a user.
 		var user = SecurityMockMvcRequestPostProcessors.user("reader").roles("READ");
+		
 		var iceCream1 = RestAssuredMockMvc
 			.given().auth().with(user)
 			.get(IceCreamController.BASE_PATH + "/1")
