@@ -2,9 +2,16 @@ package com.github.fwi.sbtreeconf.security;
 
 import static io.restassured.RestAssured.get;
 import static io.restassured.RestAssured.given;
+import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.stream.IntStream;
+
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.HttpStatus;
@@ -25,15 +32,18 @@ import lombok.extern.slf4j.Slf4j;
 	webEnvironment = WebEnvironment.RANDOM_PORT
 )
 @ActiveProfiles("test")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Slf4j
 public class IceCreamSecurityTest extends WebTest {
 
 	String url() { return getServerUrl() + IceCreamController.BASE_PATH; }
 	
+	static final String READER = "reader";
+	
 	RequestSpecification authRead() {
 		return given().auth()
 		  .preemptive()
-		  .basic("reader", "reads");
+		  .basic(READER, "reads");
 	}
 	
 	RequestSpecification authWrite() {
@@ -48,7 +58,20 @@ public class IceCreamSecurityTest extends WebTest {
 		  .basic("operator", "operates");
 	}
 
+	RequestSpecification authBadCred() {
+		return given().auth()
+		  .preemptive()
+		  .basic(READER, "read");
+	}
+	
+	@Autowired
+	IcreCreamAccessProperties accessProps;
+
+	@Autowired
+	LoginFailureRegistry logins;
+
 	@Test
+	@Order(1)
 	@SneakyThrows
 	void iceCreamSecurity() {
 		
@@ -64,10 +87,7 @@ public class IceCreamSecurityTest extends WebTest {
 		authWrite().get(url()).then().assertThat()
 			.statusCode(HttpStatus.OK.value());
 		// Invalid password test
-		given().auth()
-		  .preemptive()
-		  .basic("reader", "1234")
-		  .get(url()).then().assertThat()
+		authBadCred().get(url()).then().assertThat()
 			.statusCode(HttpStatus.UNAUTHORIZED.value());
 
 		// WRITE
@@ -88,6 +108,18 @@ public class IceCreamSecurityTest extends WebTest {
 			.statusCode(HttpStatus.UNAUTHORIZED.value());
 		authDelete().delete(url() + "/1").then().assertThat()
 			.statusCode(HttpStatus.OK.value());
+	}
+	
+	@Test
+	@Order(1000)
+	/* Test blocked user, do as last test. */
+	void blockSecurity() {
+		
+		IntStream.range(0, accessProps.getLogin().getMaxFailedAttempts()).forEach(i ->
+			authBadCred().get(url()).then().assertThat()
+				.statusCode(HttpStatus.UNAUTHORIZED.value())
+		);
+		assertThat(logins.isBlocked(READER)).isTrue();
 	}
 
 }

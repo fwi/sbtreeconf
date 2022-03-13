@@ -16,13 +16,13 @@ import lombok.extern.slf4j.Slf4j;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(
 	initializers = ConfigDataApplicationContextInitializer.class,
-	classes = LoadUsersTest.Config.class
+	classes = LoadAccessPropsTest.Config.class
 )
 // For further testing:
 // @org.springframework.boot.autoconfigure.EnableAutoConfiguration
 @ActiveProfiles("test")
 @Slf4j
-class LoadUsersTest {
+class LoadAccessPropsTest {
 	
 	@EnableConfigurationProperties(IcreCreamAccessProperties.class)
 	static class Config {
@@ -36,6 +36,10 @@ class LoadUsersTest {
 	void users() {
 		log.debug("Users: {}", props.getUsers());
 		assertThat(props.getUsers()).isNotEmpty();
+		log.debug("Logins: {}", props.getLogin());
+		assertThat(props.getLogin()).isNotNull();
+		assertThat(props.getLogin().getMaxFailedAttempts()).isGreaterThan(0);
+		assertThat(props.getLogin().getBlockedTimeout()).isNotNull();
 	}
 
 }

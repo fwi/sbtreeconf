@@ -1,5 +1,6 @@
 package com.github.fwi.sbtreeconf.security;
 
+import java.time.Duration;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -15,7 +16,8 @@ public class IcreCreamAccessProperties {
 	public static final String USERS_PREFIX = "icecream.access";
 	
 	Collection<IceCreamUser> users;
-	
+	LoginFailure login;
+
 	@Data
 	@ToString
 	public static class IceCreamUser {
@@ -24,6 +26,15 @@ public class IcreCreamAccessProperties {
 		@ToString.Exclude
 		String password;
 		Collection<String> roles = new HashSet<>();
+	}
+
+	@Data
+	@ToString
+	public static class LoginFailure {
+		
+		int maxFailedAttempts;
+		Duration maxFailedTimeout;
+		Duration blockedTimeout;
 	}
 
 }

@@ -30,7 +30,7 @@ public class IceCreamService {
 		return iceCreams;
 	}
 	
-	IceCreamResponse findOne(long id) {
+	public IceCreamResponse findOne(long id) {
 		return repo.findById(id).map(r -> mapper.map(r, IceCreamResponse.class)).orElse(null);
 	}
 

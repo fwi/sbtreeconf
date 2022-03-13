@@ -30,7 +30,8 @@ mvn spring-boot:run -P run
 # Test endpoints:
 curl -u reader:reads -svv http://localhost:8080/api/v1/icecream | jq .
 curl -u reader:reads -svv http://localhost:8080/api/v1/icecream/1 | jq .
-curl -u reader:reads -svv http://localhost:8080/api/v1/icecream/count?flavor="vanilla"
+# Also show response time in seconds
+curl -u reader:reads -svv -w '\n%{time_starttransfer}' http://localhost:8080/api/v1/icecream/count?flavor="vanilla"; echo;
 curl -u writer:writes -svv -X PUT -H 'Content-Type: application/json' \
   -d '{"flavor": "test", "shape": "round"}' http://localhost:8080/api/v1/icecream | jq .
 curl -u operator:operates -svv -X DELETE http://localhost:8080/api/v1/icecream/1 | jq .
@@ -57,12 +58,13 @@ All actuator endpoints, except the health-endpoint, require a user with role `ma
 curl -u manager:manages -svv http:/localhost:8081/actuator/ | jq .
 # Health requires no acces.
 curl -svv http:/localhost:8081/actuator/health | jq .
-curl -svv http:/localhost:8081/actuator/health/liveness
-curl -svv http:/localhost:8081/actuator/health/readiness
+curl -svv http:/localhost:8081/actuator/health/liveness; echo;
+curl -svv http:/localhost:8081/actuator/health/readiness; echo;
 curl -u manager:manages -svv http:/localhost:8081/actuator/info | jq .
 curl -u manager:manages -svv http:/localhost:8081/actuator/metrics/system.cpu.count | jq .
 curl -u manager:manages -svv http:/localhost:8081/actuator/prometheus
-curl -u manager:manages -vv http:/localhost:8081/actuator/env | jq .
+# "env" endpoint is disabled by default in ActuatorsConfig.
+curl -u manager:manages -svv http:/localhost:8081/actuator/env | jq .
 ```
 
 ### ApiDocs

@@ -25,7 +25,7 @@ import lombok.extern.slf4j.Slf4j;
  * 
  * If you do use encrypted passwords, make sure to cache "known good"
  * password hashes to prevent excessive CPU usage and delays.
- * A custom AuthenticationManager will be required. 
+ * A custom PasswordEncoder and/or AuthenticationManager will be required. 
  */
 @Slf4j
 public class UserAccessService implements UserDetailsService {
@@ -41,20 +41,28 @@ public class UserAccessService implements UserDetailsService {
 	public static final String NOOP_ENCODER = "{noop}";
 	
 	final Map<String, AuthUser> users;
+	final LoginFailureRegistry logins;
 	
-	public UserAccessService(Collection<IcreCreamAccessProperties.IceCreamUser> users) {
+	public UserAccessService(
+			Collection<IcreCreamAccessProperties.IceCreamUser> users, 
+			LoginFailureRegistry loginFailureRegistry) {
 		this.users = convert(users);
+		this.logins = loginFailureRegistry;
 	}
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		
-		log.debug("Request from user {}", username);
 		var user = users.get(username);
 		if (user == null) {
-			log.info("Unknown user {}", username);
+			log.info("Unknown user [{}].", username);
 			return null;
 		}
+		if (logins.isBlocked(username)) {
+			log.debug("User {} blocked.", username);
+			return null;
+		}
+		log.debug("Request from user {}.", username);
 		// The password gets nullified after usage, so must create new User each time.
 		return new User(user.getName(), user.getPassword(), user.getAuthorities());
 	}

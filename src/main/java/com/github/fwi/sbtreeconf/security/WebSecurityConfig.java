@@ -12,7 +12,6 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.firewall.HttpFirewall;
 import org.springframework.security.web.firewall.HttpStatusRequestRejectedHandler;
@@ -64,10 +63,29 @@ public class WebSecurityConfig {
 	}
 	
 	@Bean
-	UserDetailsService access(IcreCreamAccessProperties access) {
-		return new UserAccessService(access.getUsers());
+	UserAccessService userAccessService(IcreCreamAccessProperties access, LoginFailureRegistry loginFailureRegistry) {
+		return new UserAccessService(access.getUsers(), loginFailureRegistry);
 	}
-	
+
+	@Bean
+	LoginFailureRegistry loginFailureRegistry(IcreCreamAccessProperties access) {
+		return new LoginFailureRegistry(
+				access.getLogin().getMaxFailedAttempts(),
+				access.getLogin().getMaxFailedTimeout(),
+				access.getLogin().getBlockedTimeout()
+				);
+	}
+
+	@Bean
+	AuthenticationFailureListener authenticationFailureListener(LoginFailureRegistry loginFailureRegistry) {
+		return new AuthenticationFailureListener(loginFailureRegistry);
+	}
+
+	@Bean
+	AuthenticationSuccessListener authenticationSuccessListener(LoginFailureRegistry loginFailureRegistry) {
+		return new AuthenticationSuccessListener(loginFailureRegistry);
+	}
+
 	@Bean
 	public HttpFirewall httpFirewall() {
 		

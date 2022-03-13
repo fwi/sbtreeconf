@@ -35,3 +35,9 @@ icecream.access.users:
   password: manages
   roles:
   - manage
+
+icecream.access.login:
+  max-failed-attempts: 3
+  # Duration, e.g. 10s, 5m, 3h
+  max-failed-timeout: 10s
+  blocked-timeout: 30s
