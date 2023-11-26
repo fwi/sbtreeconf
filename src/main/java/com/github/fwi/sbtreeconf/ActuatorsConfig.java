@@ -4,6 +4,7 @@ import org.springframework.boot.actuate.autoconfigure.availability.AvailabilityH
 import org.springframework.boot.actuate.autoconfigure.availability.AvailabilityProbesAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.endpoint.EndpointAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointAutoConfiguration;
+import org.springframework.boot.actuate.autoconfigure.health.HealthContributorAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.health.HealthEndpointAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.info.InfoContributorAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.info.InfoEndpointAutoConfiguration;
@@ -17,7 +18,6 @@ import org.springframework.boot.actuate.autoconfigure.metrics.export.simple.Simp
 import org.springframework.boot.actuate.autoconfigure.metrics.task.TaskExecutorMetricsAutoConfiguration;
 //import org.springframework.boot.actuate.autoconfigure.metrics.web.servlet.WebMvcMetricsAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.metrics.web.tomcat.TomcatMetricsAutoConfiguration;
-import org.springframework.boot.actuate.autoconfigure.web.exchanges.HttpExchangesEndpointAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.web.server.ManagementContextAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.web.servlet.ServletManagementContextAutoConfiguration;
 import org.springframework.boot.autoconfigure.availability.ApplicationAvailabilityAutoConfiguration;
@@ -44,8 +44,13 @@ import org.springframework.context.annotation.Import;
 	AvailabilityProbesAutoConfiguration.class,
 	AvailabilityHealthContributorAutoConfiguration.class,
 	
+	// Add the health/ping endpoint which always reports status up.
+	HealthContributorAutoConfiguration.class,
+
 	// Add some data to the info-endpoint.
 	// ProjectInfo has to be before InfoContributor.
+	// Loads ${spring.info.build.location:classpath:META-INF/build-info.properties} and Git info.
+	// use "build-info" goal in spring-boot-maven-plugin
 	ProjectInfoAutoConfiguration.class,
 	InfoContributorAutoConfiguration.class,
 	
@@ -84,9 +89,7 @@ import org.springframework.context.annotation.Import;
 	TaskExecutorMetricsAutoConfiguration.class,
 	
 	TomcatMetricsAutoConfiguration.class,
-	HttpExchangesEndpointAutoConfiguration.class,
 	// TODO: fix this - no metrics for http-requests available
-	// and HttpExchangesEndpointAutoConfiguration does not help.
 	//WebMvcMetricsAutoConfiguration.class, 
 	// For webflux:
 	// WebFluxMetricsAutoConfiguration.class,

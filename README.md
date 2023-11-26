@@ -50,7 +50,7 @@ mvn clean package -Dmaven.test.skip -DskipDocs
 # Build with ApiDocs
 mvn clean package -DskipTests
 mvn dependency:copy -Dartifact=com.h2database:h2:1.4.200
-java -Dloader.debug=true -Dloader.path=target/dependency,src/test/resources \
+java -Dloader.debug=false -Dloader.path=target/dependency,src/test/resources \
   -jar target/sbtreeconf-0.0.1-SNAPSHOT.jar --spring.profiles.active=run
 ```
 

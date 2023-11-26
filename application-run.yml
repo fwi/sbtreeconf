@@ -4,6 +4,9 @@ debug: false
 # "env" endpoint exposes a lot of information and should be off be default.
 management.endpoints.web.exposure.include: health, info, env, metrics, prometheus
 
+# Option to show a lot of git-info.
+# management.info.git.mode: full
+
 spring.datasource.url: jdbc:h2:mem:testdb;database_to_lower=true;trace_level_system_out=1
 spring.datasource.hikari.minimumIdle: 1
 spring.datasource.hikari.maximumPoolSize: 2
@@ -15,7 +18,8 @@ logging.level:
   com.github.fwi.sbtreeconf.AcReport: info
   org.springframework: info
   org.springframework.jdbc.datasource.init.ScriptUtils: info
-  org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener: info
+  org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLogger: info
+  org.springframework.web.servlet.handler.HandlerMappingIntrospector: error
 
 icecream.access.users:
 - name: reader

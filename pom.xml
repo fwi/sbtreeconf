@@ -116,6 +116,17 @@
 	<build>
 		<plugins>
 			<plugin>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<!-- Needed for "argLine" in surefire/failsafe plugins -->
+							<goal>properties</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
 					<annotationProcessorPaths>
@@ -126,6 +137,15 @@
 							<version>${lombok.version}</version>
 						</path>
 					</annotationProcessorPaths>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<!-- Suppress warnings from the JVM. -->
+					<!-- When using jacoco, prefix with "@{argLine} " -->
+					<!-- "javaagent bytebuddy" can also be replaced with "-XX:+EnableDynamicAgentLoading" -->
+					<argLine>-Xshare:off -javaagent:${net.bytebuddy:byte-buddy-agent:jar}</argLine>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -173,6 +193,7 @@
 					<includes>
 						<include>*ApiDocs.java</include>
 					</includes>
+					<argLine>-Xshare:off -javaagent:${net.bytebuddy:byte-buddy-agent:jar}</argLine>
 				</configuration>
 				<executions>
 					<execution>

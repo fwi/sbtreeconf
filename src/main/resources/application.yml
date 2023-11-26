@@ -21,18 +21,24 @@ spring.datasource.hikari.auto-commit: false
 
 # management.endpoints.web.exposure.include: '*'
 management.server.port: 8081
-management.endpoints.web.exposure.include: health, info, metrics, prometheus
+management.endpoints.web.exposure.include: health, info, metrics, prometheus, httpexchanges
+management.metrics.distribution.percentiles-histogram.http.server.requests: true
 
 # Enable application-availability
 management.endpoint.health.probes.enabled: true
-management.health.livenessState.enabled: true
-management.health.readinessState.enabled: true
+management.endpoint.health.show-details: always
+management.endpoint.health.show-components: always
+management.health.liveness-state.enabled: true
+management.health.readiness-state.enabled: true
+management.health.db.enabled: true
+management.health.ping.enabled: true
 
 # Set some value to return in info-endpoint
 management.info.build.enabled: true
 management.info.git.enabled: true
 management.info.env.enabled: true
 management.info.java.enabled: true
+management.info.os.enabled: true
 info.app-name: ${spring.application.name}
 
 icecream.access.login:

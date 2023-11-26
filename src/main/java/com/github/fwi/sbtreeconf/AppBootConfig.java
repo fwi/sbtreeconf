@@ -21,10 +21,6 @@ import org.springframework.context.annotation.Configuration;
 	
 	// replaces ${..} in for example $Value annotations.
 	org.springframework.boot.autoconfigure.context.PropertyPlaceholderAutoConfiguration.class,
-	
-	// For actuators, loads ${spring.info.build.location:classpath:META-INF/build-info.properties} and Git info.
-	// use "build-info" goal in spring-boot-maven-plugin
-	org.springframework.boot.autoconfigure.info.ProjectInfoAutoConfiguration.class
 })
 public class AppBootConfig {
 
