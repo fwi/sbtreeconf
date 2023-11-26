@@ -36,7 +36,7 @@ public class WebSecurityConfig {
 	 * Both will be accessible without authentication.
 	 */
 	public static final String[] STATIC_RESOURCES = new String[] {
-			"/", "/docs/**"
+			"/", "/thread", "/docs/**"
 	};
 
 	@Bean

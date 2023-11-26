@@ -1,7 +1,12 @@
 package com.github.fwi.sbtreeconf;
 
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.boot.autoconfigure.task.TaskExecutionAutoConfiguration;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.task.AsyncTaskExecutor;
+import org.springframework.core.task.VirtualThreadTaskExecutor;
+import org.springframework.web.filter.ServerHttpObservationFilter;
 
 /**
  * Import auto-configurations reported by AcReport as
@@ -23,5 +28,17 @@ import org.springframework.context.annotation.Configuration;
 	org.springframework.boot.autoconfigure.context.PropertyPlaceholderAutoConfiguration.class,
 })
 public class AppBootConfig {
+
+	ServerHttpObservationFilter x;
+
+	/**
+	 * To enable virtual threads usage for async Spring Boot tasks,
+	 * use a virtual thread per task.
+	 * TODO: demonstrate this bean and virtual tasks are used.
+	 */
+	@Bean(TaskExecutionAutoConfiguration.APPLICATION_TASK_EXECUTOR_BEAN_NAME)
+	public AsyncTaskExecutor asyncTaskExecutor() {
+		return new VirtualThreadTaskExecutor("vt");
+	}
 
 }

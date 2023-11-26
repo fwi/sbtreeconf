@@ -16,8 +16,9 @@ import org.springframework.boot.actuate.autoconfigure.metrics.SystemMetricsAutoC
 import org.springframework.boot.actuate.autoconfigure.metrics.export.prometheus.PrometheusMetricsExportAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.metrics.export.simple.SimpleMetricsExportAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.metrics.task.TaskExecutorMetricsAutoConfiguration;
-//import org.springframework.boot.actuate.autoconfigure.metrics.web.servlet.WebMvcMetricsAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.metrics.web.tomcat.TomcatMetricsAutoConfiguration;
+import org.springframework.boot.actuate.autoconfigure.observation.ObservationAutoConfiguration;
+import org.springframework.boot.actuate.autoconfigure.observation.web.servlet.WebMvcObservationAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.web.server.ManagementContextAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.web.servlet.ServletManagementContextAutoConfiguration;
 import org.springframework.boot.autoconfigure.availability.ApplicationAvailabilityAutoConfiguration;
@@ -89,10 +90,13 @@ import org.springframework.context.annotation.Import;
 	TaskExecutorMetricsAutoConfiguration.class,
 	
 	TomcatMetricsAutoConfiguration.class,
-	// TODO: fix this - no metrics for http-requests available
-	//WebMvcMetricsAutoConfiguration.class, 
+	
+	// TODO: for actuator endpoints, prometheus reports uri="UNKNOWN"
+	// need something like ManagementObservationAutoConfiguration
+	ObservationAutoConfiguration.class,
+	WebMvcObservationAutoConfiguration.class,
 	// For webflux:
-	// WebFluxMetricsAutoConfiguration.class,
+	// WebFluxObservationAutoConfiguration.class,
 	
 	// Actuator endpoints to enable.
 	// Class names look like names from https://docs.spring.io/spring-boot/docs/current/reference/html/actuator.html#actuator.endpoints.exposing
