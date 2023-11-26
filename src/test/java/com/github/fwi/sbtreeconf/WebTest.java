@@ -1,6 +1,6 @@
 package com.github.fwi.sbtreeconf;
 
-import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.context.annotation.Import;
 
 import com.github.fwi.sbtreeconf.db.DbConfig;

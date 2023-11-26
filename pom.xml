@@ -9,14 +9,14 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.6.4</version>
+		<version>2.7.18</version>
 	</parent>
 
 	<properties>
 		<start-class>com.github.fwi.sbtreeconf.AppMain</start-class>
 		<java.version>17</java.version>
-		<modelmapper.version>3.1.0</modelmapper.version>
-		<asciidoctor.plugin.version>2.2.2</asciidoctor.plugin.version>
+		<modelmapper.version>3.2.0</modelmapper.version>
+		<asciidoctor.plugin.version>2.2.4</asciidoctor.plugin.version>
 		<skipDocs>false</skipDocs>
 	</properties>
 

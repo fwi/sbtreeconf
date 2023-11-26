@@ -24,7 +24,7 @@ Branches:
 To run using Maven:
 
 ```
-sdk use java 17.0.1-tem
+sdk use java 17.0.8-tem
 mvn spring-boot:run -P run
 # To run all test, including apidocs:
 mvn test
