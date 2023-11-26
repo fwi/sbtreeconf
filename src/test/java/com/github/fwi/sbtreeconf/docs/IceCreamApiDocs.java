@@ -1,14 +1,13 @@
 package com.github.fwi.sbtreeconf.docs;
 
 import static io.restassured.RestAssured.given;
-import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.documentationConfiguration;
-import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
+import static org.springframework.restdocs.restassured.RestAssuredRestDocumentation.documentationConfiguration;
+import static org.springframework.restdocs.restassured.RestAssuredRestDocumentation.document;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 
 import org.springframework.restdocs.operation.preprocess.Preprocessors;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -72,7 +71,7 @@ public class IceCreamApiDocs extends WebTest {
 			.get(url() + IceCreamController.COUNT_PATH).then().assertThat()
 			.statusCode(HttpStatus.OK.value());
 
-		givenUser().filter(document("count-ice-cream-flavor", requestParameters(
+		givenUser().filter(document("count-ice-cream-flavor", queryParameters(
 				parameterWithName("flavor").description("Flavor"))))
 			.queryParam("flavor", "vanilla")
 			.get(url() + IceCreamController.COUNT_PATH).then().assertThat()

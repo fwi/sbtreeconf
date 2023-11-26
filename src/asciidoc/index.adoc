@@ -47,7 +47,7 @@ Amount of ice-creams with one flavor.
 
 *Request* +
 include::{snippets}/{sid}/request-path.adoc[]
-include::{snippets}/{sid}/request-parameters.adoc[]
+include::{snippets}/{sid}/query-parameters.adoc[]
 
 *Response* +
 When no record is found, ``0`` will be returned.

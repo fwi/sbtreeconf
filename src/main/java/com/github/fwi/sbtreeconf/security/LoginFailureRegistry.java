@@ -9,8 +9,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-// TODO: create unit tests
-
 @RequiredArgsConstructor
 @Slf4j
 public class LoginFailureRegistry {

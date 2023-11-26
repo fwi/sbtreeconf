@@ -3,6 +3,9 @@ spring.main.banner-mode: off
 server.error.whitelabel.enabled: false
 server.error.path: /web-error
 
+# Requires Java 21 & Spring Boot 3.2.
+spring.threads.virtual.enabled: true
+
 spring.sql.init.mode: never
 spring.jpa.open-in-view: false
 

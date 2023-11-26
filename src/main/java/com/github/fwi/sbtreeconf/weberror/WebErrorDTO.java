@@ -1,6 +1,7 @@
 package com.github.fwi.sbtreeconf.weberror;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.web.context.request.WebRequest;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -23,11 +24,11 @@ public class WebErrorDTO {
 		// no-op
 	}
 
-	public WebErrorDTO(WebRequest request, HttpStatus status) {
+	public WebErrorDTO(WebRequest request, HttpStatusCode status) {
 		updateFrom(request, status);
 	}
 	
-	public void updateFrom(WebRequest request, HttpStatus status) {
+	public void updateFrom(WebRequest request, HttpStatusCode status) {
 		
 		var pathAttribute = request.getAttribute("org.springframework.web.util.UrlPathHelper.PATH", 0);
 		String path = null;
@@ -42,7 +43,17 @@ public class WebErrorDTO {
 		}
 		setPath(path);
 		setStatus(status.value());
-		setError(status.getReasonPhrase());
+		setError(statusCodeReasonPhrase(status));
+	}
+
+	String statusCodeReasonPhrase(HttpStatusCode status) {
+		
+		try {
+			return HttpStatus.valueOf(status.value()).getReasonPhrase();
+		} catch (Exception ignored) {
+			// ignore
+		}
+		return null;
 	}
 
 }

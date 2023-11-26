@@ -3,7 +3,7 @@ package com.github.fwi.sbtreeconf;
 import java.security.Principal;
 import java.util.List;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;

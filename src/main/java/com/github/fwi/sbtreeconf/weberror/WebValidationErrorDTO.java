@@ -3,7 +3,7 @@ package com.github.fwi.sbtreeconf.weberror;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.web.context.request.WebRequest;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -23,12 +23,12 @@ public class WebValidationErrorDTO extends WebErrorDTO {
 		setValidationReason();
 	}
 
-	public WebValidationErrorDTO(WebRequest request, HttpStatus status) {
+	public WebValidationErrorDTO(WebRequest request, HttpStatusCode status) {
 		updateFrom(request, status);
 	}
 	
 	@Override
-	public void updateFrom(WebRequest request, HttpStatus status) {
+	public void updateFrom(WebRequest request, HttpStatusCode status) {
 		super.updateFrom(request, status);
 		setValidationReason();
 	}

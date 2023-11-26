@@ -1,7 +1,7 @@
 package com.github.fwi.sbtreeconf.weberror;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;

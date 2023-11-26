@@ -15,8 +15,9 @@ import org.springframework.boot.actuate.autoconfigure.metrics.SystemMetricsAutoC
 import org.springframework.boot.actuate.autoconfigure.metrics.export.prometheus.PrometheusMetricsExportAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.metrics.export.simple.SimpleMetricsExportAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.metrics.task.TaskExecutorMetricsAutoConfiguration;
-import org.springframework.boot.actuate.autoconfigure.metrics.web.servlet.WebMvcMetricsAutoConfiguration;
+//import org.springframework.boot.actuate.autoconfigure.metrics.web.servlet.WebMvcMetricsAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.metrics.web.tomcat.TomcatMetricsAutoConfiguration;
+import org.springframework.boot.actuate.autoconfigure.web.exchanges.HttpExchangesEndpointAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.web.server.ManagementContextAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.web.servlet.ServletManagementContextAutoConfiguration;
 import org.springframework.boot.autoconfigure.availability.ApplicationAvailabilityAutoConfiguration;
@@ -83,7 +84,10 @@ import org.springframework.context.annotation.Import;
 	TaskExecutorMetricsAutoConfiguration.class,
 	
 	TomcatMetricsAutoConfiguration.class,
-	WebMvcMetricsAutoConfiguration.class,
+	HttpExchangesEndpointAutoConfiguration.class,
+	// TODO: fix this - no metrics for http-requests available
+	// and HttpExchangesEndpointAutoConfiguration does not help.
+	//WebMvcMetricsAutoConfiguration.class, 
 	// For webflux:
 	// WebFluxMetricsAutoConfiguration.class,
 	

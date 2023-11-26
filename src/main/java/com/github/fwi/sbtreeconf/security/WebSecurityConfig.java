@@ -9,7 +9,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
@@ -23,7 +23,7 @@ import org.springframework.security.web.firewall.StrictHttpFirewall;
 @ImportAutoConfiguration({
 	SecurityAutoConfiguration.class,
 })
-@EnableGlobalMethodSecurity(securedEnabled = true)
+@EnableMethodSecurity(securedEnabled = true)
 public class WebSecurityConfig {
 	
 	/**
@@ -39,27 +39,29 @@ public class WebSecurityConfig {
 			"/", "/docs/**"
 	};
 
-	// Security was updated with Spring Boot 2.7:
-	// https://spring.io/blog/2022/02/21/spring-security-without-the-websecurityconfigureradapter
-	
 	@Bean
 	SecurityFilterChain secure(HttpSecurity http) throws Exception {
-		
-		http.csrf().disable();
-		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-		
-		http.authorizeRequests((requests) -> {
-			requests.requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll();
-			requests.antMatchers(STATIC_RESOURCES).permitAll();
-			
-			requests.requestMatchers(EndpointRequest.to(HealthEndpoint.class)).permitAll();
-			requests.requestMatchers(EndpointRequest.toAnyEndpoint()
-					.excluding(HealthEndpoint.class)).hasRole(ROLE_MANAGE);
-			
-			requests.anyRequest().authenticated();
-		});
-		http.httpBasic(Customizer.withDefaults());
-		return http.build();
+		//@formatter:off
+		return http
+			.csrf(c -> c.disable())
+			// TODO: cors gives a warning log about caching, disable the warn-log?
+			// Cache miss for REQUEST dispatch to '/api/v1/icecream/1' (previous null). Performing CorsConfiguration lookup. This is logged once only at WARN level, and every time at TRACE
+			// Disabling cors does not look like a good idea.
+			//.cors(c -> c.disable())
+			.sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+			.authorizeHttpRequests(c -> c
+				.requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+				.requestMatchers(STATIC_RESOURCES).permitAll()
+				
+				.requestMatchers(EndpointRequest.to(HealthEndpoint.class)).permitAll()
+				.requestMatchers(EndpointRequest.toAnyEndpoint()
+						.excluding(HealthEndpoint.class)).hasRole(ROLE_MANAGE)
+				
+				.anyRequest().authenticated()
+			)
+			.httpBasic(Customizer.withDefaults())
+			.build();
+		//@formatter:on
 	}
 	
 	@Bean

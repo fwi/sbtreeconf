@@ -4,10 +4,11 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.validation.ConstraintViolationException;
+import jakarta.validation.ConstraintViolationException;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.security.access.AccessDeniedException;
@@ -32,9 +33,9 @@ public class WebErrorResponse extends ResponseEntityExceptionHandler {
 	public ResponseEntity<Object> controllerError(SafeResponseStatusException ex, WebRequest request) {
 		
 		log.debug("Controller error for {}", request);
-		var error = new WebErrorDTO(request, ex.getStatus());
+		var error = new WebErrorDTO(request, ex.getStatusCode());
 		error.setReason(ex.getReason());
-		return new ResponseEntity<>(error, ex.getStatus());
+		return new ResponseEntity<>(error, ex.getStatusCode());
 	}
 
 	@ExceptionHandler(AccessDeniedException.class)
@@ -76,7 +77,7 @@ public class WebErrorResponse extends ResponseEntityExceptionHandler {
 	 */
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(
-			MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+			MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
 
 		log.debug("Validation failed for {}", request);
 		var error = new WebValidationErrorDTO(request, status);
@@ -98,7 +99,7 @@ public class WebErrorResponse extends ResponseEntityExceptionHandler {
 	 */
 	@Override
 	protected ResponseEntity<Object> handleExceptionInternal(
-			Exception ex, @Nullable Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
+			Exception ex, @Nullable Object body, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
 
 		var error = new WebErrorDTO(request, status);
 		error.setReason("Unkown cause");

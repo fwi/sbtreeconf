@@ -19,12 +19,13 @@ Branches:
   - actuator-endpoints
   - apidocs
   - websecurity
+  - spring-boot-3 ([guide](https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-3.0-Migration-Guide/))
   - TODO: webflux
 
 To run using Maven:
 
 ```
-sdk use java 17.0.8-tem
+sdk use java 21.0.1-tem
 mvn spring-boot:run -P run
 # To run all test, including apidocs:
 mvn test
@@ -81,6 +82,12 @@ mvn package -P apidocs
 The resulting html-documentation is available at `target/classes/static/docs`
 
 # Notes and references
+
+To always see color-coded logging output on console, use:
+```
+export SPRING_OUTPUT_ANSI_ENABLED=ALWAYS
+```
+Other options are `NEVER` and `DETECT` (the default).
 
 ### To @Import or @ImportAutoConfiguration
 

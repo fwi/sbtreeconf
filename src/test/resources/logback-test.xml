@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE configuration>
 <configuration>
+    <!-- By default the spring.application.name is logged on each line, which is too big in our case. -->
+    <!-- Overwrite by setting the LOGGED_APPLICATION_NAME -->
+    <property name="LOGGED_APPLICATION_NAME" value="sbt"/>
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
     <root level="info">
         <appender-ref ref="CONSOLE"/>
