@@ -21,10 +21,16 @@ import org.springframework.boot.actuate.autoconfigure.observation.ObservationAut
 import org.springframework.boot.actuate.autoconfigure.observation.web.servlet.WebMvcObservationAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.web.server.ManagementContextAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.web.servlet.ServletManagementContextAutoConfiguration;
+import org.springframework.boot.actuate.endpoint.web.PathMappedEndpoints;
 import org.springframework.boot.autoconfigure.availability.ApplicationAvailabilityAutoConfiguration;
 import org.springframework.boot.autoconfigure.info.ProjectInfoAutoConfiguration;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.server.observation.ServerRequestObservationContext;
+
+import io.micrometer.observation.ObservationPredicate;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Enable actuator support with manual AutoConfiguration.
@@ -91,8 +97,7 @@ import org.springframework.context.annotation.Import;
 	
 	TomcatMetricsAutoConfiguration.class,
 	
-	// TODO: for actuator endpoints, prometheus reports uri="UNKNOWN"
-	// need something like ManagementObservationAutoConfiguration
+	// Enable "http_server_requests_seconds" metrics in prometheus endpoint.
 	ObservationAutoConfiguration.class,
 	WebMvcObservationAutoConfiguration.class,
 	// For webflux:
@@ -107,6 +112,30 @@ import org.springframework.context.annotation.Import;
 	// this is a potentially dangerous one to use/expose.
 	// EnvironmentEndpointAutoConfiguration.class, 
 })
+@Slf4j
 public class ActuatorsConfig {
+
+	public static final String HTTP_SERVER_REQUESTS = "http.server.requests";
+
+	/**
+	 * Disable observation (metrics) for actuator endpoints.
+	 *
+	 * NOTE: for actuator endpoints, prometheus reports no "http_server_requests" metrics
+	 * when management.server.port is different from main app port.
+	 * The issue also shows when Spring Boot autoconfiguration is fully enabled.
+	 * 
+	 * See also https://github.com/spring-projects/spring-boot/issues/34801
+	 */
+	@Bean
+	ObservationPredicate actuatorServerContextPredicate(PathMappedEndpoints pme) {
+		log.info("Disabling actuator observations for {} at {}", HTTP_SERVER_REQUESTS, pme.getBasePath());
+		return (name, context) -> {
+			if (name.equals(HTTP_SERVER_REQUESTS)
+					&& context instanceof ServerRequestObservationContext serverContext) {
+				return !serverContext.getCarrier().getRequestURI().startsWith(pme.getBasePath());
+			}
+			return true;
+		};
+	}
 
 }
