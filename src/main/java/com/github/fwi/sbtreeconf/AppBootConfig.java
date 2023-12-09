@@ -1,12 +1,7 @@
 package com.github.fwi.sbtreeconf;
 
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
-import org.springframework.boot.autoconfigure.task.TaskExecutionAutoConfiguration;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.task.AsyncTaskExecutor;
-import org.springframework.core.task.VirtualThreadTaskExecutor;
-import org.springframework.web.filter.ServerHttpObservationFilter;
 
 /**
  * Import auto-configurations reported by AcReport as
@@ -26,19 +21,12 @@ import org.springframework.web.filter.ServerHttpObservationFilter;
 	
 	// replaces ${..} in for example $Value annotations.
 	org.springframework.boot.autoconfigure.context.PropertyPlaceholderAutoConfiguration.class,
+
+	// Task (scheduling) autoconfiguration will take virtual threads into account.
+	// TODO: demonstrate virtual tasks are used.
+	org.springframework.boot.autoconfigure.task.TaskExecutionAutoConfiguration.class,
+	org.springframework.boot.autoconfigure.task.TaskSchedulingAutoConfiguration.class,
 })
 public class AppBootConfig {
-
-	ServerHttpObservationFilter x;
-
-	/**
-	 * To enable virtual threads usage for async Spring Boot tasks,
-	 * use a virtual thread per task.
-	 * TODO: demonstrate this bean and virtual tasks are used.
-	 */
-	@Bean(TaskExecutionAutoConfiguration.APPLICATION_TASK_EXECUTOR_BEAN_NAME)
-	public AsyncTaskExecutor asyncTaskExecutor() {
-		return new VirtualThreadTaskExecutor("vt");
-	}
 
 }

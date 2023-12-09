@@ -1,15 +1,13 @@
 package com.github.fwi.sbtreeconf;
 
-import java.util.concurrent.Executors;
-
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
+import org.springframework.boot.autoconfigure.web.embedded.EmbeddedWebServerFactoryCustomizerAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.servlet.DispatcherServletAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.servlet.ServletWebServerFactoryAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration;
-import org.springframework.boot.web.embedded.tomcat.TomcatProtocolHandlerCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -20,6 +18,9 @@ import com.github.fwi.sbtreeconf.weberror.WebErrorController;
 
 @Configuration
 @ImportAutoConfiguration({
+		// Enables virtual threads in Tomcat.
+		// TODO: the actuator endpoints still use platform threads?
+		EmbeddedWebServerFactoryCustomizerAutoConfiguration.class,
 		// Starts a Tomcat server.
 		ServletWebServerFactoryAutoConfiguration.class,
 		// Enables rest-controller functions.
@@ -36,18 +37,6 @@ import com.github.fwi.sbtreeconf.weberror.WebErrorController;
 		WebMvcAutoConfiguration.class,
 })
 public class WebServerConfig {
-
-	/**
-	 * To enable virtual threads usage within Tomcat,
-	 * update the "protocol handler" to use virtual threads.
-	 * TODO: the actuator endpoints still use platform threads.
-	 */
-	@Bean
-	public TomcatProtocolHandlerCustomizer<?> protocolHandlerVirtualThreadExecutorCustomizer() {
-		return protocolHandler -> {
-			protocolHandler.setExecutor(Executors.newVirtualThreadPerTaskExecutor());
-		};
-	}
 
 	@Bean
 	WebErrorResponse webErrorResponse() {

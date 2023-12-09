@@ -107,6 +107,8 @@ public class WebErrorResponse extends ResponseEntityExceptionHandler {
 		if (HttpStatus.INTERNAL_SERVER_ERROR.equals(status)) {
 			request.setAttribute(WebUtils.ERROR_EXCEPTION_ATTRIBUTE, ex, WebRequest.SCOPE_REQUEST);
 			log.error("Internal server error at {}", error, ex);
+		} else if (HttpStatus.NOT_FOUND.equals(status)) {
+			log.info("Resource not found at {} - {}", error, ex.toString());
 		} else {
 			log.warn("Unexpected error at {}", error, ex);
 		}

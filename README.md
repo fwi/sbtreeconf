@@ -20,7 +20,6 @@ Branches:
   - apidocs
   - websecurity
   - spring-boot-3 ([guide](https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-3.0-Migration-Guide/))
-  - TODO: webflux
 
 To run using Maven:
 
