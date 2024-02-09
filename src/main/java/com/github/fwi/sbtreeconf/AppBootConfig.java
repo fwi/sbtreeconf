@@ -23,7 +23,6 @@ import org.springframework.context.annotation.Configuration;
 	org.springframework.boot.autoconfigure.context.PropertyPlaceholderAutoConfiguration.class,
 
 	// Task (scheduling) autoconfiguration will take virtual threads into account.
-	// TODO: demonstrate virtual tasks are used.
 	org.springframework.boot.autoconfigure.task.TaskExecutionAutoConfiguration.class,
 	org.springframework.boot.autoconfigure.task.TaskSchedulingAutoConfiguration.class,
 })
