@@ -8,7 +8,7 @@ The branches in this project show this process where each branch is a step that 
 
 Branches:
 
-  - view from bottom to top in [active branches](https://github.com/fwi/sbtreeconf/branches/active)
+  - view from bottom to top in [all branches](https://github.com/fwi/sbtreeconf/branches/all)
   - beginnings
   - first-endpoint
   - json-with-service
