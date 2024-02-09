@@ -30,6 +30,8 @@ mvn spring-boot:run -P run
 mvn test
 # To run just one test:
 mvn test -Dtest=IceCreamMockTest -DskipDocs
+# Full build, including static apidocs
+mvn clean package
 # Endpoints:
 curl -u reader:reads -svv http://localhost:8080/api/v1/icecream | jq .
 curl -u reader:reads -svv http://localhost:8080/api/v1/icecream/1 | jq .
@@ -48,7 +50,8 @@ see also [executable-jar](https://docs.spring.io/spring-boot/docs/current/refere
 mvn clean package -Dmaven.test.skip -DskipDocs
 # Build with ApiDocs
 mvn clean package -DskipTests
-mvn dependency:copy -Dartifact=com.h2database:h2:1.4.200
+# Run app from resulting jar-file
+mvn dependency:copy -Dartifact=com.h2database:h2:2.2.224
 java -Dloader.debug=false -Dloader.path=target/dependency,src/test/resources \
   -jar target/sbtreeconf-0.0.1-SNAPSHOT.jar --spring.profiles.active=run
 ```

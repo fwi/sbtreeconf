@@ -89,7 +89,7 @@ public class WebSecurityConfig {
 	}
 
 	@Bean
-	public HttpFirewall httpFirewall() {
+	HttpFirewall httpFirewall() {
 		
 		/*
 		 * Values often contains special characters, these need to be allowed.

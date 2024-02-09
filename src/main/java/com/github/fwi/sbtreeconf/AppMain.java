@@ -1,9 +1,6 @@
 package com.github.fwi.sbtreeconf;
 
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.SpringBootVersion;
-import org.springframework.boot.actuate.info.InfoContributor;
-import org.springframework.boot.actuate.info.Info.Builder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -34,20 +31,12 @@ public class AppMain {
 	AcReport acReport() {
 		return new AcReport();
 	}
-	
-	/**
-	 * Add some information to actuator info-endpoint.
+
+	/*
+	 * Bean definition for InfoContributor used to be here,
+	 * but that woulld fail to start app from jar with exception
+	 * "NoClassDefFoundError". Moved InfoContributor to the
+	 * ActuatorsConfig class and error went away.
 	 */
-	
-	@Bean
-	public InfoContributor infoContributor() {
-		return new InfoContributor() {
-			@Override
-			public void contribute(Builder builder) {
-				builder.withDetail("spring-boot.version", SpringBootVersion.getVersion());
-			}
-		};
-	}
-	
 
 }

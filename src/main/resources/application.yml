@@ -4,8 +4,10 @@ server.error.whitelabel.enabled: false
 server.error.path: /web-error
 
 # Requires Java 21 & Spring Boot 3.2.
-# TODO: enable autoconfiguration for this setting
 spring.threads.virtual.enabled: true
+
+# Prevent app from exiting when all threads are virtual.
+spring.main.keep-alive: true
 
 spring.sql.init.mode: never
 spring.jpa.open-in-view: false

@@ -6,6 +6,7 @@ import java.util.List;
 
 import jakarta.validation.ConstraintViolationException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 import org.springframework.web.util.WebUtils;
 
 import lombok.extern.slf4j.Slf4j;
@@ -108,7 +110,13 @@ public class WebErrorResponse extends ResponseEntityExceptionHandler {
 			request.setAttribute(WebUtils.ERROR_EXCEPTION_ATTRIBUTE, ex, WebRequest.SCOPE_REQUEST);
 			log.error("Internal server error at {}", error, ex);
 		} else if (HttpStatus.NOT_FOUND.equals(status)) {
-			log.info("Resource not found at {} - {}", error, ex.toString());
+			// This app has no favicon but browsers always request it: log at debug-level.
+			if (ex instanceof NoResourceFoundException rex 
+				&& StringUtils.contains(rex.getResourcePath(), "favicon.ico")) {
+					log.debug("Favicon resource not found at {}", rex.getResourcePath());
+			} else {
+				log.info("Resource not found at {} - {}", error, ex.toString());
+			}
 		} else {
 			log.warn("Unexpected error at {}", error, ex);
 		}

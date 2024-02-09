@@ -1,5 +1,6 @@
 package com.github.fwi.sbtreeconf;
 
+import org.springframework.boot.SpringBootVersion;
 import org.springframework.boot.actuate.autoconfigure.availability.AvailabilityHealthContributorAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.availability.AvailabilityProbesAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.endpoint.EndpointAutoConfiguration;
@@ -22,6 +23,8 @@ import org.springframework.boot.actuate.autoconfigure.observation.web.servlet.We
 import org.springframework.boot.actuate.autoconfigure.web.server.ManagementContextAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.web.servlet.ServletManagementContextAutoConfiguration;
 import org.springframework.boot.actuate.endpoint.web.PathMappedEndpoints;
+import org.springframework.boot.actuate.info.Info.Builder;
+import org.springframework.boot.actuate.info.InfoContributor;
 import org.springframework.boot.autoconfigure.availability.ApplicationAvailabilityAutoConfiguration;
 import org.springframework.boot.autoconfigure.info.ProjectInfoAutoConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -135,6 +138,19 @@ public class ActuatorsConfig {
 				return !serverContext.getCarrier().getRequestURI().startsWith(pme.getBasePath());
 			}
 			return true;
+		};
+	}
+
+		/**
+	 * Add some information to actuator info-endpoint.
+	 */
+	@Bean
+	public InfoContributor infoContributor() {
+		return new InfoContributor() {
+			@Override
+			public void contribute(Builder builder) {
+				builder.withDetail("spring-boot.version", SpringBootVersion.getVersion());
+			}
 		};
 	}
 
