@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE configuration>
 <configuration>
-    <!-- By default the spring.application.name is logged on each line, which is too big in our case. -->
-    <!-- Overwrite by setting the LOGGED_APPLICATION_NAME -->
-    <property name="LOGGED_APPLICATION_NAME" value="sbt"/>
+    <!-- The default pattern from "defaults.xml" is very verbose. Customize to show only relevant information. -->
+    <property name="CONSOLE_LOG_PATTERN" value="%clr(%d{HH:mm:ss.SSS}){faint} %clr(%5p) %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n%rEx"/>
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
     <root level="info">
         <appender-ref ref="CONSOLE"/>
