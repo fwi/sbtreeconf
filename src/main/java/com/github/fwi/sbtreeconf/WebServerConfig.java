@@ -16,10 +16,10 @@ import com.github.fwi.sbtreeconf.weberror.WebErrorController;
 
 // Option 1: webmvc
 
+// TODO: the actuator endpoints still use platform threads?
 @Configuration
 @ImportAutoConfiguration({
-		// Enables virtual threads in Tomcat.
-		// TODO: the actuator endpoints still use platform threads?
+		// Enables virtual threads in Tomcat and sets up secure webserver error-page configuration.
 		EmbeddedWebServerFactoryCustomizerAutoConfiguration.class,
 		// Starts a Tomcat server.
 		ServletWebServerFactoryAutoConfiguration.class,
