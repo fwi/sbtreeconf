@@ -61,7 +61,7 @@ The apidocs can be found under http://localhost:8080/docs/index.html
 All actuator endpoints, except the health-endpoint, require a user with role `manage`.
 
 ```
-curl -u manager:manages -svv http:/localhost:8081/actuator/ | jq .
+curl -u manager:manages -svv http:/localhost:8081/actuator | jq .
 # Health requires no acces.
 curl -svv http:/localhost:8081/actuator/health | jq .
 curl -svv http:/localhost:8081/actuator/health/liveness; echo;

@@ -44,10 +44,6 @@ public class WebSecurityConfig {
 		//@formatter:off
 		return http
 			.csrf(c -> c.disable())
-			// TODO: cors gives a warning log about caching, disable the warn-log?
-			// Cache miss for REQUEST dispatch to '/api/v1/icecream/1' (previous null). Performing CorsConfiguration lookup. This is logged once only at WARN level, and every time at TRACE
-			// Disabling cors does not look like a good idea.
-			//.cors(c -> c.disable())
 			.sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 			.authorizeHttpRequests(c -> c
 				.requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()

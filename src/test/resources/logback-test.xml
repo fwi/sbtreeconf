@@ -16,7 +16,6 @@
     <logger name="org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLogger" level="info"/>
     <logger name="org.springframework.jdbc.datasource.init.ScriptUtils" level="info"/>
     <logger name="org.hibernate.type.BasicTypeRegistry" level="info"/>
-    <logger name="org.springframework.web.servlet.handler.HandlerMappingIntrospector" level="error"/>
 
     <logger name="org.springframework.boot.test.context" level="warn"/>
     <logger name="org.springframework.test.context.support" level="warn"/>
