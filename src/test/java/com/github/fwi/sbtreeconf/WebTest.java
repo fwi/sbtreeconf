@@ -6,12 +6,12 @@ import org.springframework.context.annotation.Import;
 import com.github.fwi.sbtreeconf.db.DbConfig;
 import com.github.fwi.sbtreeconf.security.WebSecurityConfig;
 
-public class WebTest {
+public class WebTest { // NOSONAR
 	
 	public static final String JSON = "application/json";
 	
-	public final String USER = "operator"; 
-	public final String USER_PASS = "operates"; 
+	public static final String USER = "operator"; 
+	public static final String USER_PASS = "operates"; 
 	
 	@Import({
 		WebServerConfig.class, 
@@ -19,9 +19,7 @@ public class WebTest {
 		DbConfig.class, 
 		IceCreamConfig.class
 	})
-	public static class Config {
-		
-	}
+	public static class Config {}
 
 	@LocalServerPort
 	int port;

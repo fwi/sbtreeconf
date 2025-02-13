@@ -1,7 +1,5 @@
 package com.github.fwi.sbtreeconf;
 
-//import static io.restassured.RestAssured.get;
-//import static io.restassured.RestAssured.delete;
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -9,6 +7,7 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
+import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -38,7 +37,7 @@ import lombok.extern.slf4j.Slf4j;
 @ActiveProfiles("test")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Slf4j
-public class IceCreamTest extends WebTest {
+class IceCreamTest extends WebTest {
 
 	static final TypeRef<List<IceCreamResponse>> icList = new TypeRef<>() {};
 
@@ -186,7 +185,7 @@ public class IceCreamTest extends WebTest {
 		
 		assertThat(validationError.getValidations())
 			.isInstanceOf(Map.class)
-			.extracting("flavor").asList().containsExactly("must not be blank");
+			.extracting("flavor").asInstanceOf(InstanceOfAssertFactories.LIST).containsExactly("must not be blank");
 	}
 
 }

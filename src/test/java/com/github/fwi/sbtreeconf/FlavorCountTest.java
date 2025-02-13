@@ -27,9 +27,9 @@ class FlavorCountTest {
 				IceCreamResponse.builder().flavor("z").build()
 				);
 		var service = new IceCreamService(null, null);
-		assertEquals(service.countFlavor(iceCreams, "a"), 0);
-		assertEquals(service.countFlavor(iceCreams, "x"), 2);
-		assertEquals(service.countFlavor(iceCreams, "y"), 1);
-		assertEquals(service.countFlavor(iceCreams, "z"), 3);
+		assertEquals(0, service.countFlavor(iceCreams, "a"));
+		assertEquals(2, service.countFlavor(iceCreams, "x"));
+		assertEquals(1, service.countFlavor(iceCreams, "y"));
+		assertEquals(3, service.countFlavor(iceCreams, "z"));
 	}
 }

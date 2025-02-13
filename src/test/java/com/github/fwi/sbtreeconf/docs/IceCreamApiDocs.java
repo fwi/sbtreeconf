@@ -33,7 +33,8 @@ import lombok.SneakyThrows;
 	webEnvironment = WebEnvironment.RANDOM_PORT
 )
 @ActiveProfiles("test")
-public class IceCreamApiDocs extends WebTest {
+@SuppressWarnings("java:S3577")
+class IceCreamApiDocs extends WebTest {
 
 	// https://docs.spring.io/spring-restdocs/docs/current/reference/html5/
     private RequestSpecification spec;

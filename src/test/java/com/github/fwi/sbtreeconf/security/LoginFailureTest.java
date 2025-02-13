@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Test the (un)blocking of users after failed logins.
  */
-public class LoginFailureTest {
+class LoginFailureTest {
 	
 	/*
 	 * This test uses small wait-times which in turn could fail the test
@@ -17,7 +17,7 @@ public class LoginFailureTest {
 	 */
 	
 	LoginFailureRegistry testInstance() {
-		return new LoginFailureRegistry(3, Duration.ofMillis(50), Duration.ofMillis(60));
+		return new LoginFailureRegistry(3, Duration.ofMillis(150), Duration.ofMillis(260));
 	}
 	
 	@Test
@@ -32,20 +32,20 @@ public class LoginFailureTest {
 		assertThat(registry.isBlocked(user)).isFalse();
 		registry.failedLogin(user);
 		assertThat(registry.isBlocked(user)).isTrue();
-		sleep(61);
+		sleep(261);
 		assertThat(registry.isBlocked(user)).isFalse();
 		
 		// failed login resets after failed-timeout.
 		registry.failedLogin(user);
 		registry.failedLogin(user);
-		sleep(51);
+		sleep(151);
 		registry.failedLogin(user);
 		registry.failedLogin(user);
 		assertThat(registry.isBlocked(user)).isFalse();
 	}
 	
 	void sleep(long timeMs) {
-		try { Thread.sleep(timeMs); } catch (Exception e) {
+		try { Thread.sleep(timeMs); } catch (Exception e) { // NOSONAR
 			// ignored
 		}
 	}

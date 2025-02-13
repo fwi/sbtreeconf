@@ -12,6 +12,7 @@
 
     <logger name="org.hibernate" level="info"/>
     <logger name="org.hibernate.jpa.internal.util.LogHelper" level="info"/>
+    <logger name="org.hibernate.orm.connections.pooling" level="warn"/>
     
     <logger name="org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLogger" level="info"/>
     <logger name="org.springframework.jdbc.datasource.init.ScriptUtils" level="info"/>

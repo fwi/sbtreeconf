@@ -79,6 +79,8 @@ ApiDocs can be compiled separately using:
 
 ```
 mvn package -P apidocs
+# or
+mvn asciidoctor:process-asciidoc
 ```
 
 The resulting html-documentation is available at `target/classes/static/docs`

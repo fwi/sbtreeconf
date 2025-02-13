@@ -34,7 +34,7 @@ import lombok.extern.slf4j.Slf4j;
 @ActiveProfiles("test")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Slf4j
-public class IceCreamSecurityTest extends WebTest {
+class IceCreamSecurityTest extends WebTest {
 
 	String url() { return getServerUrl() + IceCreamController.BASE_PATH; }
 	

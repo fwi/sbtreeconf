@@ -9,14 +9,14 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.2.5</version>
+		<version>3.4.2</version>
 	</parent>
 
 	<properties>
 		<start-class>com.github.fwi.sbtreeconf.AppMain</start-class>
 		<java.version>21</java.version>
-		<modelmapper.version>3.2.0</modelmapper.version>
-		<asciidoctor.plugin.version>2.2.4</asciidoctor.plugin.version>
+		<modelmapper.version>3.2.2</modelmapper.version>
+		<asciidoctor.plugin.version>3.1.1</asciidoctor.plugin.version>
 		<skipDocs>false</skipDocs>
 	</properties>
 
@@ -179,6 +179,7 @@
 				<groupId>io.github.git-commit-id</groupId>
 				<artifactId>git-commit-id-maven-plugin</artifactId>
 				<configuration>
+					<verbose>false</verbose>
 					<failOnNoGitDirectory>false</failOnNoGitDirectory>
 					<failOnUnableToExtractRepoInfo>false</failOnUnableToExtractRepoInfo>
 					<offline>true</offline>
