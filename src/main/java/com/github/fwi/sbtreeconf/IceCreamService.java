@@ -4,7 +4,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeMap;
 import org.springframework.stereotype.Component;
 
 import com.github.fwi.sbtreeconf.db.IceCreamEntity;
@@ -18,11 +17,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class IceCreamService {
 
-	final IceCreamRepo repo;
-	final ModelMapper mapper;
+	private final IceCreamRepo repo;
+	private final ModelMapper mapper;
 	
-	TypeMap<IceCreamResponse, IceCreamEntity> dto2entity;
-
 	List<IceCreamResponse> findAll() {
 		
 		var iceCreams = new LinkedList<IceCreamResponse>();
@@ -40,7 +37,6 @@ public class IceCreamService {
 
 	long countFlavor(String flavor) {
 		return repo.countByFlavor(flavor);
-		// return countFlavor(findAll(), flavor);
 	}
 	
 	// this is just as an example, normally repo would be updated with filter-query.
@@ -50,20 +46,20 @@ public class IceCreamService {
 	
 	IceCreamResponse upsert(IceCreamRequest iceCream, String user) {
 		
-		IceCreamEntity record = null;
+		IceCreamEntity dbRecord = null;
 		if (iceCream.getId() == null) {
-			record = mapper.map(iceCream, IceCreamEntity.class);
-			record.setModifiedBy(user);
-			record = repo.save(record);
+			dbRecord = mapper.map(iceCream, IceCreamEntity.class);
+			dbRecord.setModifiedBy(user);
+			dbRecord = repo.save(dbRecord);
 		} else {
-			record = repo.findById(iceCream.getId()).orElse(null);
-			if (record == null) {
+			dbRecord = repo.findById(iceCream.getId()).orElse(null);
+			if (dbRecord == null) {
 				return null;
 			}
-			mapper.map(iceCream, record);
-			record = repo.save(record);
+			mapper.map(iceCream, dbRecord);
+			dbRecord = repo.save(dbRecord);
 		}
-		return mapper.map(record, IceCreamResponse.class);
+		return mapper.map(dbRecord, IceCreamResponse.class);
 	}
 
 	public IceCreamResponse delete(long id, String user) {

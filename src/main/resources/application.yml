@@ -2,6 +2,7 @@ spring.application.name: Spring Boot Tree Configuration with ice cream
 spring.main.banner-mode: off
 server.error.whitelabel.enabled: false
 server.error.path: /web-error
+server.error.include-exception: false
 
 # Requires Java 21 & Spring Boot 3.2.
 spring.threads.virtual.enabled: true
@@ -17,10 +18,12 @@ spring.jpa.hibernate.ddl-auto: none
 
 # Disable auto-commit when using Hibernate for speeeed,
 # see also https://vladmihalcea.com/why-you-should-always-use-hibernate-connection-provider_disables_autocommit-for-resource-local-jpa-transactions/
+# and https://vladmihalcea.com/spring-transaction-connection-management/
 spring.datasource.hikari.auto-commit: false
 
 # Spring should set property below automatically when auto-commit is off.
 # hibernate.connection.provider_disables_autocommit: true
+# spring.jpa.properties.hibernate.connection.provider_disables_autocommit: true
 
 # management.endpoints.web.exposure.include: '*'
 management.server.port: 8081

@@ -6,8 +6,13 @@ import static org.assertj.core.api.Assertions.entry;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.autoconfigure.jdbc.DataSourceHealthContributorAutoConfiguration;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.JdbcTemplateAutoConfiguration;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
+import org.springframework.boot.autoconfigure.sql.init.SqlInitializationAutoConfiguration;
 import org.springframework.boot.test.context.ConfigDataApplicationContextInitializer;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.ApplicationContext;
@@ -19,6 +24,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.github.fwi.sbtreeconf.db.DbConfig;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @ExtendWith(SpringExtension.class)
@@ -26,31 +32,23 @@ import lombok.extern.slf4j.Slf4j;
 	initializers = ConfigDataApplicationContextInitializer.class,
 	classes = {DbConfig.class, DbTest.Config.class}
 )
-/*
- * When running "mvn test" (i.e. all tests in one go), 
- * each test using the database will run "schema-h2.sql"
- * which gives rise to errors like "table already exists".
- * One work-around is to use annotation @AutoConfigureTestDatabase
- * but that ignores our configured "database.url" and constructs a Spring-Boot default one.
- * Instead use @DirtiesContext to ensure database tests do not interfere with each other.
- * It is a little bit slower, but does give each test a clean work-environment.
- */
-// Replaced with "drop all objects" in schema-h2.sql
-// @org.springframework.test.annotation.DirtiesContext
 @ActiveProfiles("test")
 @Slf4j
+@RequiredArgsConstructor(onConstructor_ = {@Autowired})
 class DbTest {
 	
-	// Custom test-configuration for this test-class.
 	@TestConfiguration
-	@ImportAutoConfiguration(JdbcTemplateAutoConfiguration.class)
+	@ImportAutoConfiguration({
+		DataSourceAutoConfiguration.class, 
+		DataSourceTransactionManagerAutoConfiguration.class,
+		SqlInitializationAutoConfiguration.class,
+		HibernateJpaAutoConfiguration.class,
+		JdbcTemplateAutoConfiguration.class
+	})
 	static class Config {}
 	
-	@Autowired
-	ApplicationContext context;
-	
-	@Autowired
-	JdbcTemplate jdbcTemplate;
+	final ApplicationContext context;
+	final JdbcTemplate jdbcTemplate;
 	
 	@Test
 	void testDb() {

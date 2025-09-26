@@ -6,22 +6,28 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.Map;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.web.server.LocalManagementPort;
+import org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import io.restassured.common.mapper.TypeRef;
 import lombok.extern.slf4j.Slf4j;
 
-@ExtendWith(SpringExtension.class)
 @SpringBootTest(
-	classes = { WebServerConfig.class, ActuatorsConfig.class }, 
+	classes = {WebServerConfig.class, ActuatorsConfig.class}, 
 	webEnvironment = WebEnvironment.RANDOM_PORT
 )
+@EnableAutoConfiguration(exclude = {
+	DataSourceAutoConfiguration.class,
+	SecurityAutoConfiguration.class,
+	ManagementWebSecurityAutoConfiguration.class
+})
 @ActiveProfiles("test")
 @Slf4j
 class ActuatorsTest {
@@ -48,22 +54,20 @@ class ActuatorsTest {
 			.statusCode(HttpStatus.OK.value())
 			.extract().as(textMap);
 		
-		assertThat(health.get("status")).isEqualTo("UP");
+		assertThat(health).contains(Map.entry("status", "UP"));
 
 		var info = get(url() + "/info").then().assertThat()
 			.statusCode(HttpStatus.OK.value())
 			.extract().as(textMap);
 
 		var buildInfo = fullTextMap(info.get("build")); 
-		assertThat(buildInfo).isNotNull();
-		assertThat(buildInfo.get("artifact")).isEqualTo("sbtreeconf");
+		assertThat(buildInfo).contains(Map.entry("artifact", "sbtreeconf"));
 
 		var metric = get(url() + "/metrics/system.cpu.count").then().assertThat()
 				.statusCode(HttpStatus.OK.value())
 				.extract().as(textMap);
 		
 		var cpuCount = metric.get("name");
-		assertThat(cpuCount).isNotNull();
 		assertThat(cpuCount).isEqualTo("system.cpu.count");
 		
 		// Prometheus is not activated in test environment.

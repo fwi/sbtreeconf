@@ -16,6 +16,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
@@ -86,7 +87,7 @@ public class WebErrorResponse extends ResponseEntityExceptionHandler {
 		var fieldErrors = new HashMap<String, List<String>>();
 		for (var fe : ex.getBindingResult().getFieldErrors()) {
 			if (!fieldErrors.containsKey(fe.getField())) {
-				fieldErrors.put(fe.getField(), new LinkedList<String>());
+				fieldErrors.put(fe.getField(), new LinkedList<>());
 			}
 			fieldErrors.get(fe.getField()).add(fe.getDefaultMessage());
 		}
@@ -107,7 +108,7 @@ public class WebErrorResponse extends ResponseEntityExceptionHandler {
 		error.setReason("Unkown cause");
 		// Copied from parent method.
 		if (HttpStatus.INTERNAL_SERVER_ERROR.equals(status)) {
-			request.setAttribute(WebUtils.ERROR_EXCEPTION_ATTRIBUTE, ex, WebRequest.SCOPE_REQUEST);
+			request.setAttribute(WebUtils.ERROR_EXCEPTION_ATTRIBUTE, ex, RequestAttributes.SCOPE_REQUEST);
 			log.error("Internal server error at {}", error, ex);
 		} else if (HttpStatus.NOT_FOUND.equals(status)) {
 			// This app has no favicon but browsers always request it: log at debug-level.

@@ -1,7 +1,5 @@
 package com.github.fwi.sbtreeconf;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,17 +15,19 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(
 	initializers = ConfigDataApplicationContextInitializer.class,
 	classes = AcReportTest.Config.class
 )
-// For further testing:
-// @org.springframework.boot.autoconfigure.EnableAutoConfiguration
 @ActiveProfiles("test")
 @Slf4j
+@RequiredArgsConstructor(onConstructor_ = {@Autowired})
 class AcReportTest {
 	
 	@TestConfiguration
@@ -45,11 +45,8 @@ class AcReportTest {
 		}
 	}
 
-	@Autowired
-	ApplicationContext ctx;
-
-	@Autowired
-	AcReport acReport;
+	final ApplicationContext ctx;
+	final AcReport acReport;
 	
 	@Test
 	void verifyReport() {

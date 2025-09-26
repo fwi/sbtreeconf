@@ -10,30 +10,26 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.github.fwi.sbtreeconf.IceCreamController;
 import com.github.fwi.sbtreeconf.IceCreamRequest;
 import com.github.fwi.sbtreeconf.WebTest;
 
 import io.restassured.specification.RequestSpecification;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
-@ExtendWith(SpringExtension.class)
-@SpringBootTest(
-	classes = WebTest.Config.class, 
-	webEnvironment = WebEnvironment.RANDOM_PORT
-)
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Slf4j
+@RequiredArgsConstructor(onConstructor_ = {@Autowired})
 class IceCreamSecurityTest extends WebTest {
 
 	String url() { return getServerUrl() + IceCreamController.BASE_PATH; }
@@ -64,11 +60,8 @@ class IceCreamSecurityTest extends WebTest {
 		  .basic(READER, "read");
 	}
 	
-	@Autowired
-	IcreCreamAccessProperties accessProps;
-
-	@Autowired
-	LoginFailureRegistry logins;
+	final IcreCreamAccessProperties accessProps;
+	final LoginFailureRegistry logins;
 
 	@Test
 	@Order(1)

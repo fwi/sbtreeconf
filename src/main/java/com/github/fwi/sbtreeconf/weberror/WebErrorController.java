@@ -1,20 +1,19 @@
 package com.github.fwi.sbtreeconf.weberror;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -29,24 +28,23 @@ import lombok.extern.slf4j.Slf4j;
  * Also, the default error pages (either from Spring or Tomcat) reveal the (exact version of the) underlying software.
  * Probably best to try to hide it a little bit.
  */
-@Controller
+@RestController
 @Slf4j
-public class WebErrorController implements ErrorController, InitializingBean {
+@RequiredArgsConstructor
+public class WebErrorController implements ErrorController {
 	
 	public static final String SERVER_ERROR_PATH = "/web-error";
 	
-	@Autowired
-	ObjectMapper mapper;
+	private final ObjectMapper mapper;
 	
 	ObjectWriter writer;
 
-	@Override
-	public void afterPropertiesSet() throws Exception {
+	@PostConstruct
+	private void init() {
 		writer = mapper.writerWithDefaultPrettyPrinter();
 	}
 
 	@RequestMapping(path = SERVER_ERROR_PATH, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
 	public String handleError(HttpServletRequest request) {
 		
 		var error = new WebErrorDTO();
@@ -56,7 +54,9 @@ public class WebErrorController implements ErrorController, InitializingBean {
 						Integer.valueOf(
 							request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE).toString())
 					);
-		} catch (Exception ignored) {}
+		} catch (Exception _) {
+			// ignored
+		}
 		if (status == null) {
 			error.setReason("Unknown");
 		} else {
@@ -66,12 +66,16 @@ public class WebErrorController implements ErrorController, InitializingBean {
 		String path = null;
 		try {
 			path = request.getAttribute(RequestDispatcher.ERROR_REQUEST_URI).toString();
-		} catch (Exception ignored) {}
+		} catch (Exception _) {
+			// ignored
+		}
 		error.setPath(path);
 		String response = "error";
 		try {
 			response = writer.writeValueAsString(error);
-		} catch (Exception ignored) {}
+		} catch (Exception _) {
+			// ignored
+		}
 		log.trace("Returning web-error response {}", response);
 		return response;
 	}

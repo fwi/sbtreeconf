@@ -1,3 +1,4 @@
+# sbtreeconf test configuration
 debug: false
 
 # Mimic postgreSQL database, see also comments in schema-h2.sql

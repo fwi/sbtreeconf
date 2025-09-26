@@ -31,17 +31,17 @@ public class WebErrorDTO {
 	public void updateFrom(WebRequest request, HttpStatusCode status) {
 		
 		var pathAttribute = request.getAttribute("org.springframework.web.util.UrlPathHelper.PATH", 0);
-		String path = null;
+		String requestPath = null;
 		if (pathAttribute != null) {
-			path = String.valueOf(pathAttribute);
+			requestPath = String.valueOf(pathAttribute);
 		}
-		if (path == null) {
-			path = request.getDescription(false);
+		if (requestPath == null) {
+			requestPath = request.getDescription(false);
 		}
-		if (path != null && path.startsWith(URI_PREFIX)) {
-			path = path.substring(URI_PREFIX.length());
+		if (requestPath != null && requestPath.startsWith(URI_PREFIX)) {
+			requestPath = requestPath.substring(URI_PREFIX.length());
 		}
-		setPath(path);
+		setPath(requestPath);
 		setStatus(status.value());
 		setError(statusCodeReasonPhrase(status));
 	}
@@ -50,8 +50,8 @@ public class WebErrorDTO {
 		
 		try {
 			return HttpStatus.valueOf(status.value()).getReasonPhrase();
-		} catch (Exception ignored) {
-			// ignore
+		} catch (Exception _) {
+			// ignored
 		}
 		return null;
 	}

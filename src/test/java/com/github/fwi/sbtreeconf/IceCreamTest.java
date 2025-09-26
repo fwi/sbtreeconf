@@ -18,31 +18,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.HttpStatus;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.github.fwi.sbtreeconf.weberror.WebErrorDTO;
 import com.github.fwi.sbtreeconf.weberror.WebValidationErrorDTO;
 
 import io.restassured.common.mapper.TypeRef;
 import io.restassured.specification.RequestSpecification;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
-@ExtendWith(SpringExtension.class)
-@SpringBootTest(
-	classes = WebTest.Config.class, 
-	webEnvironment = WebEnvironment.RANDOM_PORT
-)
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Slf4j
+@DirtiesContext
+@RequiredArgsConstructor(onConstructor_ = {@Autowired})
 class IceCreamTest extends WebTest {
 
 	static final TypeRef<List<IceCreamResponse>> icList = new TypeRef<>() {};
 
-	@Autowired
-	ModelMapper mapper;
+	final ModelMapper mapper;
 	
 	String url() { return getServerUrl() + IceCreamController.BASE_PATH; }
 

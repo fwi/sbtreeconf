@@ -85,7 +85,7 @@ public class UserAccessService implements UserDetailsService {
 		return usersAuth;
 	}
 	
-	Collection<SimpleGrantedAuthority> toAuthorities(Collection<String> roles) {
+	private Collection<SimpleGrantedAuthority> toAuthorities(Collection<String> roles) {
 		
 		var authorities = new HashSet<SimpleGrantedAuthority>();
 		if (roles == null) {

@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionEvaluationReport;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -14,6 +15,12 @@ import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
 
+
+/**
+ * Since {@link EnableAutoConfiguration} is now used, this class is no longer relevant.
+ * It is kept here for reference and can show auto-configuration classes that were
+ * loaded by Spring Boot but not used (i.e. evaluated but not considered relevant).
+ */
 @Component
 @Order(Ordered.LOWEST_PRECEDENCE)
 @Slf4j
@@ -56,7 +63,8 @@ public class AcReport implements ApplicationListener<ContextRefreshedEvent> {
 		if (ucSet != null) {
 			unconditionals.addAll(ucSet);
 		}
-		for (var className: outcomes.keySet()) {
+		for (var outcome: outcomes.entrySet()) {
+			var className = outcome.getKey();
 			if (className == null || !className.contains(AUTO_CONF)) {
 				continue;
 			}

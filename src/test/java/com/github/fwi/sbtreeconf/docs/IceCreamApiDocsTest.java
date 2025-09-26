@@ -16,8 +16,8 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.HttpStatus;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.github.fwi.sbtreeconf.IceCreamController;
 import com.github.fwi.sbtreeconf.IceCreamRequest;
@@ -27,20 +27,17 @@ import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.specification.RequestSpecification;
 import lombok.SneakyThrows;
 
-@ExtendWith({SpringExtension.class, RestDocumentationExtension.class})
-@SpringBootTest(
-	classes = WebTest.Config.class, 
-	webEnvironment = WebEnvironment.RANDOM_PORT
-)
+@ExtendWith(RestDocumentationExtension.class)
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
-@SuppressWarnings("java:S3577")
-class IceCreamApiDocs extends WebTest {
+@DirtiesContext
+class IceCreamApiDocsTest extends WebTest {
 
 	// https://docs.spring.io/spring-restdocs/docs/current/reference/html5/
     private RequestSpecification spec;
 
 	@BeforeEach
-	public void setUp(RestDocumentationContextProvider restDocumentation) {
+	void setUp(RestDocumentationContextProvider restDocumentation) {
 
 		spec = new RequestSpecBuilder().addFilter(
 				documentationConfiguration(restDocumentation)

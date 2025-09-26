@@ -4,10 +4,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.MockMvcAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,12 +17,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-
-import com.github.fwi.sbtreeconf.db.IceCreamRepo;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -30,7 +29,6 @@ import lombok.extern.slf4j.Slf4j;
  * Requires dependency io.rest-assured:spring-mock-mvc
  * and org.springframework.security:spring-security-test
  */
-@ExtendWith(SpringExtension.class)
 @SpringBootTest(
 	classes = IceCreamMockTest.Config.class 
 )
@@ -52,26 +50,26 @@ org.springframework.boot.test.autoconfigure.web.reactive.WebTestClientAutoConfig
  */
 @ActiveProfiles("test")
 @Slf4j
-@MockitoBean(types = {IceCreamRepo.class})
+@MockitoBean(types = {IceCreamService.class})
+@RequiredArgsConstructor(onConstructor_ = {@Autowired})
 class IceCreamMockTest {
 	
 	@Configuration
+	@EnableWebMvc
 	@Import({
 		WebServerConfig.class,
 		IceCreamConfig.class
 	})
 	@ImportAutoConfiguration({
 		MockMvcAutoConfiguration.class,
+		JacksonAutoConfiguration.class,
 		SecurityAutoConfiguration.class,
 	})
 	static class Config {}
 
-	@MockitoBean
-	IceCreamService icService;
+	final MockMvc mockMvc;
+	final IceCreamService icService;
 
-	@Autowired
-	MockMvc mockMvc;
-	
 	@BeforeEach
 	void setup() {
 		RestAssuredMockMvc.mockMvc(mockMvc);

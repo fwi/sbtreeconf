@@ -11,6 +11,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @ExtendWith(SpringExtension.class)
@@ -18,19 +19,15 @@ import lombok.extern.slf4j.Slf4j;
 	initializers = ConfigDataApplicationContextInitializer.class,
 	classes = LoadAccessPropsTest.Config.class
 )
-// For further testing:
-// @org.springframework.boot.autoconfigure.EnableAutoConfiguration
 @ActiveProfiles("test")
 @Slf4j
+@RequiredArgsConstructor(onConstructor_ = {@Autowired})
 class LoadAccessPropsTest {
 	
 	@EnableConfigurationProperties(IcreCreamAccessProperties.class)
-	static class Config {
-		
-	}
+	static class Config {}
 	
-	@Autowired
-	IcreCreamAccessProperties props;
+	final IcreCreamAccessProperties props;
 	
 	@Test
 	void users() {

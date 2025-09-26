@@ -15,8 +15,8 @@ public class IcreCreamAccessProperties {
 	
 	public static final String USERS_PREFIX = "icecream.access";
 	
-	Collection<IceCreamUser> users;
-	LoginFailure login;
+	private Collection<IceCreamUser> users;
+	private LoginFailure login;
 
 	@Data
 	@ToString
