@@ -1,6 +1,6 @@
 package com.github.fwi.sbtreeconf;
 
-import java.time.OffsetDateTime;
+import java.time.Instant;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -25,7 +25,7 @@ public class IceCreamResponse {
 	private String flavor;
 	private String shape;
 
-	private OffsetDateTime created;
-	private OffsetDateTime modified;
+	private Instant created;
+	private Instant modified;
 	private String modifiedBy;
 }

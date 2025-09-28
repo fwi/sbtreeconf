@@ -3,26 +3,22 @@ package com.github.fwi.sbtreeconf;
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.time.OffsetDateTime;
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 
-import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ProblemDetail;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
-
-import com.github.fwi.sbtreeconf.weberror.WebErrorDTO;
-import com.github.fwi.sbtreeconf.weberror.WebValidationErrorDTO;
 
 import io.restassured.common.mapper.TypeRef;
 import io.restassured.specification.RequestSpecification;
@@ -78,9 +74,9 @@ class IceCreamTest extends WebTest {
 				.log().all().and()
 				.assertThat()
 				.statusCode(HttpStatus.BAD_REQUEST.value())
-				.extract().as(WebErrorDTO.class);
+				.extract().as(ProblemDetail.class);
 
-		assertThat(errorDto.getReason()).contains("Flavor must have a value");
+		assertThat(errorDto.getDetail()).contains("Flavor must have a value");
 		
 		var none = givenUser().get(url() + "/0").then().assertThat()
 				.statusCode(HttpStatus.OK.value())
@@ -103,7 +99,7 @@ class IceCreamTest extends WebTest {
 
 		log.debug("Testing icecream storage.");
 		
-		final var oldDate = OffsetDateTime.parse("2022-02-05T21:00:00+01");
+		final var oldDate = Instant.parse("2022-02-05T21:00:00Z");
 		// Providing a modified date does not give an error,
 		// the value is just ignored.
 		var newIceCream = IceCreamRequest.builder()
@@ -179,11 +175,10 @@ class IceCreamTest extends WebTest {
 			.log().all().and()
 			.assertThat()
 			.statusCode(HttpStatus.BAD_REQUEST.value())
-			.extract().as(WebValidationErrorDTO.class);
+			.extract().as(WebValidationError.class);
 		
-		assertThat(validationError.getValidations())
-			.isInstanceOf(Map.class)
-			.extracting("flavor").asInstanceOf(InstanceOfAssertFactories.LIST).containsExactly("must not be blank");
+		assertThat(validationError.getErrors())
+			.containsExactly(Map.of("parameter", "flavor", "error", "must not be blank"));
 	}
 
 }

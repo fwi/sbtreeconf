@@ -15,14 +15,15 @@
     <logger name="org.hibernate.orm.connections.pooling" level="warn"/>
     
     <logger name="org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLogger" level="info"/>
-    <logger name="org.springframework.jdbc.datasource.init.ScriptUtils" level="info"/>
-    <logger name="org.hibernate.type.BasicTypeRegistry" level="info"/>
+    <logger name="org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver" level="info"/>
 
     <logger name="org.springframework.boot.test.context" level="warn"/>
     <logger name="org.springframework.test.context.support" level="warn"/>
     <logger name="org.springframework.test.context.web" level="warn"/>
 
 		<!-- SQL logging -->
+    <logger name="org.springframework.jdbc.datasource.init.ScriptUtils" level="info"/>
+    <logger name="org.hibernate.type.BasicTypeRegistry" level="info"/>
 		<!-- Use trace-level in application-test.yml settings instead, far more effective. -->
     <logger name="org.springframework.jdbc.core.JdbcTemplate" level="info"/>
     <logger name="org.springframework.jdbc.core.StatementCreatorUtils" level="info"/>

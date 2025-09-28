@@ -10,7 +10,7 @@ import com.github.fwi.sbtreeconf.db.IceCreamRepo;
 public class IceCreamConfig {
 
 	@Bean
-	public ModelMapper modelMapper() {
+	ModelMapper modelMapper() {
 		return new ModelMapper();
 	}
 

@@ -1,6 +1,6 @@
 package com.github.fwi.sbtreeconf.db;
 
-import java.time.OffsetDateTime;
+import java.time.Instant;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -45,20 +45,15 @@ public class IceCreamEntity {
 	@Setter
 	private String shape;
 	
-	/*
-	 * More at
-	 * https://blog.actorsfit.in/a?ID=00400-36a32d63-d128-4269-8481-c09a7cacdef2
-	 * (can't find original source).
-	 */
 	@Getter
 	@Column(insertable = false, updatable = false)
 	@Generated(event = EventType.INSERT)
-	private OffsetDateTime created;
+	private Instant created;
 
 	@Getter
 	@Column(insertable = false, updatable = false)
 	@Generated(event = { EventType.INSERT, EventType.UPDATE })
-	private OffsetDateTime modified;
+	private Instant modified;
 
 	@Getter
 	@Setter

@@ -27,7 +27,7 @@ public class IceCreamService {
 		return iceCreams;
 	}
 	
-	public IceCreamResponse findOne(long id) {
+	IceCreamResponse findOne(long id) {
 		return repo.findById(id).map(r -> mapper.map(r, IceCreamResponse.class)).orElse(null);
 	}
 
@@ -62,7 +62,7 @@ public class IceCreamService {
 		return mapper.map(dbRecord, IceCreamResponse.class);
 	}
 
-	public IceCreamResponse delete(long id, String user) {
+	IceCreamResponse delete(long id, String user) {
 		
 		var deleted = findOne(id);
 		if (deleted != null) {

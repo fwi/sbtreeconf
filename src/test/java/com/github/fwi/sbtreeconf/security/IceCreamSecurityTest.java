@@ -90,7 +90,7 @@ class IceCreamSecurityTest extends WebTest {
 
 		authRead().contentType(JSON).body(newIceCream)
 			.put(url()).then().assertThat()
-			.statusCode(HttpStatus.UNAUTHORIZED.value());
+			.statusCode(HttpStatus.FORBIDDEN.value());
 		authWrite().contentType(JSON).body(newIceCream)
 			.put(url()).then().assertThat()
 			.statusCode(HttpStatus.OK.value());
@@ -98,7 +98,7 @@ class IceCreamSecurityTest extends WebTest {
 		// DELETE
 		
 		authWrite().delete(url() + "/1").then().assertThat()
-			.statusCode(HttpStatus.UNAUTHORIZED.value());
+			.statusCode(HttpStatus.FORBIDDEN.value());
 		authDelete().delete(url() + "/1").then().assertThat()
 			.statusCode(HttpStatus.OK.value());
 	}

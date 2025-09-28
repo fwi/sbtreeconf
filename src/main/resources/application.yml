@@ -1,14 +1,14 @@
 spring.application.name: Spring Boot Tree Configuration with ice cream
 spring.main.banner-mode: off
-server.error.whitelabel.enabled: false
-server.error.path: /web-error
-server.error.include-exception: false
 
 # Requires Java 21 & Spring Boot 3.2.
 spring.threads.virtual.enabled: true
 
 # Prevent app from exiting when all threads are virtual.
 spring.main.keep-alive: true
+
+spring.mvc.problemdetails.enabled: true
+server.error.whitelabel.enabled: false
 
 spring.sql.init.mode: never
 spring.jpa.open-in-view: false

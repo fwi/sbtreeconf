@@ -21,13 +21,37 @@
 		<skipDocs>false</skipDocs>
 	</properties>
 
+	<dependencyManagement>
+		<dependencies>
+			<!-- exclude logging implementation from runtime -->
+			<!-- mvn dependency:tree -Dverbose | grep -i log-->
+			<dependency>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-classic</artifactId>
+				<scope>runtime</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.jboss.logging</groupId>
+				<artifactId>jboss-logging</artifactId>
+				<scope>runtime</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.logging.log4j</groupId>
+				<artifactId>log4j-api</artifactId>
+				<scope>runtime</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.logging.log4j</groupId>
+				<artifactId>log4j-to-slf4j</artifactId>
+				<scope>runtime</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 	<dependencies>
 		<dependency>
-			<!-- Option 1 -->
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-			<!-- Option 2 -->
-			<!-- spring-boot-starter-webflux -->
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -94,15 +118,8 @@
 		</dependency>
 
 		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-classic</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-
-		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<scope>provided</scope>
 			<optional>true</optional>
 		</dependency>
 	</dependencies>
@@ -205,11 +222,14 @@
 					<artifactId>h2</artifactId>
 					<scope>runtime</scope>
 				</dependency>
+				<!-- comment devtools dependency out to see actual error-responses (without stacktraces) -->
+				<!--
 				<dependency>
 					<groupId>org.springframework.boot</groupId>
 					<artifactId>spring-boot-devtools</artifactId>
 					<scope>runtime</scope>
 				</dependency>
+				-->
 			</dependencies>
 			<build>
 				<plugins>

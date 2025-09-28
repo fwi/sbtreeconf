@@ -42,10 +42,14 @@ mvn clean package
 curl -u reader:reads -svv http://localhost:8080/api/v1/icecream | jq .
 curl -u reader:reads -svv http://localhost:8080/api/v1/icecream/1 | jq .
 # Also show response time in seconds
-curl -u reader:reads -svv -w '\n%{time_starttransfer}' http://localhost:8080/api/v1/icecream/count?flavor="vanilla"; echo;
+curl -u reader:reads -svv -w '\n%{time_starttransfer}' http://localhost:8080/api/v1/icecream/count?flavor="vanilla"; echo
 curl -u writer:writes -svv -X PUT -H 'Content-Type: application/json' \
   -d '{"flavor": "test", "shape": "round"}' http://localhost:8080/api/v1/icecream | jq .
 curl -u operator:operates -svv -X DELETE http://localhost:8080/api/v1/icecream/1 | jq .
+# Errors
+curl -u reader:reads -sv localhost:8080/api/v1/icecream/count?flavor= | jq .
+curl -u writer:writes -sv -X PUT  -H 'Content-Type: application/json' localhost:8080/api/v1/icecream -d '{"test": "invalid"}' | jq .
+curl -u reader:reads -svg localhost:8080/api/v1/icecream/count?flavor=[ ; echo
 ```
 
 To start the app from executable jar-file (containing the `PropertiesLauncher`,

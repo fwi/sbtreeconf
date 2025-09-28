@@ -12,13 +12,16 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ProblemDetail;
 import org.springframework.test.context.ActiveProfiles;
-
-import com.github.fwi.sbtreeconf.weberror.WebErrorDTO;
 
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Example of a test that starts the application without the database and security layer
+ * by excluding the auto-configuration for both.
+ */
 @SpringBootTest(
 	classes = WebServerConfig.class, 
 	webEnvironment = WebEnvironment.RANDOM_PORT
@@ -40,9 +43,9 @@ class WebServerTest extends WebTest {
 		log.debug("Testing web-server up at {}", getServerUrl());
 		var response = get(getServerUrl() + "/bla-not-here").then().assertThat()
 				.statusCode(HttpStatus.NOT_FOUND.value())
-				.extract().as(WebErrorDTO.class);
+				.extract().as(ProblemDetail.class);
 		log.debug("Response: {}", response);
-		assertThat(response.getError()).contains("Not Found");
+		assertThat(response.getTitle()).isEqualTo("Not Found");
 	}
 
 }

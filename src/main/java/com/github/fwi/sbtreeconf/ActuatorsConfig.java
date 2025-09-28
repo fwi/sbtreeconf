@@ -10,6 +10,7 @@ import org.springframework.http.server.observation.ServerRequestObservationConte
 import io.micrometer.observation.ObservationPredicate;
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: the actuator endpoints still use platform threads?
 @Configuration
 @Slf4j
 public class ActuatorsConfig {

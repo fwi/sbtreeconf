@@ -12,8 +12,8 @@ drop all objects;
 
 create table ice_cream (
 id         identity,
-created    timestamp not null default current_timestamp,
-modified   timestamp not null default current_timestamp on update current_timestamp,
+created    timestamp with time zone not null default current_timestamp,
+modified   timestamp with time zone not null default current_timestamp on update current_timestamp,
 modified_by varchar(128),
 flavor     varchar(128),
 shape      varchar(128)
