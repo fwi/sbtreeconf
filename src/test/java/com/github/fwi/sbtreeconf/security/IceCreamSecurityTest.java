@@ -108,7 +108,7 @@ class IceCreamSecurityTest extends WebTest {
 	/* Test blocked user, do as last test. */
 	void blockSecurity() {
 		
-		IntStream.range(0, accessProps.getLogin().getMaxFailedAttempts()).forEach(i ->
+		IntStream.range(0, accessProps.getLogin().getMaxFailedAttempts()).forEach(_ ->
 			authBadCred().get(url()).then().assertThat()
 				.statusCode(HttpStatus.UNAUTHORIZED.value())
 		);

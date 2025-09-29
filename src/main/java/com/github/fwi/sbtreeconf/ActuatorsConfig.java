@@ -22,7 +22,6 @@ public class ActuatorsConfig {
 	 *
 	 * NOTE: for actuator endpoints, prometheus reports no "http_server_requests" metrics
 	 * when management.server.port is different from main app port.
-	 * The issue also shows when Spring Boot autoconfiguration is fully enabled.
 	 * 
 	 * See also https://github.com/spring-projects/spring-boot/issues/34801
 	 */

@@ -11,10 +11,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.firewall.HttpFirewall;
-import org.springframework.security.web.firewall.HttpStatusRequestRejectedHandler;
-import org.springframework.security.web.firewall.RequestRejectedHandler;
-import org.springframework.security.web.firewall.StrictHttpFirewall;
 
 @Configuration
 @EnableConfigurationProperties(IcreCreamAccessProperties.class)
@@ -30,7 +26,7 @@ public class WebSecurityConfig {
 	 * Home ("/") redirects to apidocs at "/docs/index.html".
 	 * Both will be accessible without authentication.
 	 */
-	public static final String[] STATIC_RESOURCES = new String[] {
+	protected static final String[] STATIC_RESOURCES = new String[] {
 			"/", "/thread", "/docs/**"
 	};
 
@@ -77,29 +73,6 @@ public class WebSecurityConfig {
 	@Bean
 	AuthenticationSuccessListener authenticationSuccessListener(LoginFailureRegistry loginFailureRegistry) {
 		return new AuthenticationSuccessListener(loginFailureRegistry);
-	}
-
-	@Bean
-	HttpFirewall httpFirewall() {
-		
-		/*
-		 * Values often contains special characters, these need to be allowed.
-		 */
-		var firewall = new StrictHttpFirewall();
-		firewall.setAllowUrlEncodedPercent(true);
-		firewall.setAllowUrlEncodedPeriod(true);
-		firewall.setAllowUrlEncodedSlash(true);
-		return firewall;
-	}
-	
-	/**
-	 * Prevent errors in log from bad requests (e.g. containing "//") as detected by the firewall.
-	 */
-	@Bean
-	RequestRejectedHandler requestRejectedHandler() {
-	   // sends an error response with a configurable status code (default is 400 BAD_REQUEST)
-	   // we can pass a different value in the constructor
-	   return new HttpStatusRequestRejectedHandler();
 	}
 
 }

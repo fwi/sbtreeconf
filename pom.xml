@@ -127,30 +127,17 @@
 	<build>
 		<plugins>
 			<plugin>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<executions>
-					<execution>
-						<goals>
-							<!-- Needed for "argLine" in surefire/failsafe plugins -->
-							<goal>properties</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<!-- Prevent warning from compiler about annotation processing. -->
+					<!-- Silence Java warnings -->
 					<proc>full</proc>
 				</configuration>
 			</plugin>
 			<plugin>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
-					<!-- Suppress warnings from the JVM. -->
-					<!-- When using jacoco, prefix with "@{argLine} " -->
-					<!-- "javaagent" can also be replaced with "-XX:+EnableDynamicAgentLoading" -->
-					<argLine>-Xshare:off --sun-misc-unsafe-memory-access=allow -javaagent:${org.mockito:mockito-core:jar}</argLine>
+					<!-- Silence Java warnings -->
+					<argLine>-Xshare:off -XX:+EnableDynamicAgentLoading --sun-misc-unsafe-memory-access=allow</argLine>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -223,13 +210,11 @@
 					<scope>runtime</scope>
 				</dependency>
 				<!-- comment devtools dependency out to see actual error-responses (without stacktraces) -->
-				<!--
 				<dependency>
 					<groupId>org.springframework.boot</groupId>
 					<artifactId>spring-boot-devtools</artifactId>
 					<scope>runtime</scope>
 				</dependency>
-				-->
 			</dependencies>
 			<build>
 				<plugins>

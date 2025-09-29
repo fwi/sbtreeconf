@@ -168,7 +168,13 @@ class IceCreamTest extends WebTest {
 				.extract().asString();
 
 		assertThat(noneDeleted).isEmpty();
-		
+	}
+
+	@Test
+	@Order(4)
+	@SneakyThrows
+	void validateIceCream() {
+
 		log.debug("Testing error codes");
 		var validationError = givenUser().contentType(JSON).body("{\"test\": \"invalid\"}")
 			.put(url()).then()

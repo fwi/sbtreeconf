@@ -47,7 +47,7 @@ public class LoginFailureRegistry {
 		// for the same user are handled at the same time.
 		
 		final var now = LocalDateTime.now();
-		var lastFailTime = failedLoginTimes.computeIfAbsent(username, v -> now);
+		var lastFailTime = failedLoginTimes.computeIfAbsent(username, _ -> now);
 		
 		// reset failed attempts if it was far in the past.
 		
@@ -56,8 +56,7 @@ public class LoginFailureRegistry {
 			failedLoginTimes.put(username, now);
 			failedLogins.put(username, new AtomicInteger(1));
 		} else {
-			failedAttempts = failedLogins.computeIfAbsent(username, 
-					v -> new AtomicInteger()).incrementAndGet();
+			failedAttempts = failedLogins.computeIfAbsent(username, _ -> new AtomicInteger()).incrementAndGet();
 		}
 
 		if (failedAttempts >= maxFailedAttempts

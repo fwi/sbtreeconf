@@ -39,7 +39,13 @@ public class WebErrorResponse extends ResponseEntityExceptionHandler {
 
 	/**
 	 * Called when multiple parameters / validations fail.
-	 * TODO: add unit test.
+	 * <p>
+	 * Note: for a list of elements, only the list-index is provided in the parameter-value.
+	 * The actual field in the element that had an issue is not shown. E.g.:
+	 * <blockquote><pre>
+	 *   error: must not be blank
+	 *   parameter: iceCreamRequestList[2]
+	 * </pre></blockquote>
 	 */
 	@Override
 	protected ResponseEntity<Object> handleHandlerMethodValidationException(
