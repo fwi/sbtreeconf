@@ -6,6 +6,7 @@ import org.springframework.context.MessageSourceResolvable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -38,29 +39,29 @@ public class WebErrorResponse extends ResponseEntityExceptionHandler {
 	}
 
 	/**
-	 * Called when multiple parameters / validations fail.
+	 * Called when a parameter that is a collection fails.
 	 * <p>
-	 * Note: for a list of elements, only the list-index is provided in the parameter-value.
-	 * The actual field in the element that had an issue is not shown. E.g.:
-	 * <blockquote><pre>
-	 *   error: must not be blank
-	 *   parameter: iceCreamRequestList[2]
-	 * </pre></blockquote>
+	 * Note: this implementation may not be complete.
+	 * It has been tested for a list of items but not, for example, a list of maps with items.
 	 */
 	@Override
 	protected ResponseEntity<Object> handleHandlerMethodValidationException(
 			HandlerMethodValidationException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
 		
 		log.debug("Method validation failed for {}", request);
-		// Copied from https://github.com/spring-projects/spring-framework/issues/31887
+		// Copied from https://github.com/spring-projects/spring-framework/issues/31887 and updated to include a field-name.
 		var errors = ex.getParameterValidationResults().stream()
 				.flatMap(result -> result.getResolvableErrors().stream()
 					.map(error -> {
-						String param = (error instanceof ObjectError objectError ?
-								objectError.getObjectName() :
-								((MessageSourceResolvable) error.getArguments()[0]).getDefaultMessage());
+						var param = switch(error) {
+							case ObjectError o -> o.getObjectName();
+							default -> ((MessageSourceResolvable) error.getArguments()[0]).getDefaultMessage();
+						};
 						if (result.getContainerIndex() != null) {
-							param = param + "[" + result.getContainerIndex() + "]";
+							param += "[" + result.getContainerIndex() + "]";
+							if (error instanceof FieldError fieldError) {
+								param += "." + fieldError.getField();
+							}
 						}
 						return Map.of("parameter", param, "error", error.getDefaultMessage());
 					})

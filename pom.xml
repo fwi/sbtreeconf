@@ -9,7 +9,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.5.6</version>
+		<version>3.5.7</version>
 	</parent>
 
 	<properties>
@@ -147,12 +147,7 @@
 				<configuration>
 					<executable>true</executable>
 					<layout>ZIP</layout>
-					<excludes>
-						<exclude>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-						</exclude>
-					</excludes>
+					<includeOptional>false</includeOptional>
 				</configuration>
 				<executions>
 					<execution>

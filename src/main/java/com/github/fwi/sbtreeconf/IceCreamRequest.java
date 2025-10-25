@@ -1,5 +1,6 @@
 package com.github.fwi.sbtreeconf;
 
+import jakarta.validation.constraints.Size;
 import jakarta.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -22,7 +23,12 @@ import lombok.NoArgsConstructor;
 public class IceCreamRequest {
 	
 	private Long id;
+
 	@NotBlank
+	@Size(min = 2, max = 128)
 	private String flavor;
+
+	@NotBlank
+	@Size(min = 2, max = 128)
 	private String shape;
 }

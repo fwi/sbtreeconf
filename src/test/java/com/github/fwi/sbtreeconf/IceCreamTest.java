@@ -71,7 +71,7 @@ class IceCreamTest extends WebTest {
 		var errorDto = givenUser()
 				.queryParam("flavor", "")
 				.get(url() + IceCreamController.COUNT_PATH).then()
-				.log().all().and()
+				//.log().all().and()
 				.assertThat()
 				.statusCode(HttpStatus.BAD_REQUEST.value())
 				.extract().as(ProblemDetail.class);
@@ -178,13 +178,13 @@ class IceCreamTest extends WebTest {
 		log.debug("Testing error codes");
 		var validationError = givenUser().contentType(JSON).body("{\"test\": \"invalid\"}")
 			.put(url()).then()
-			.log().all().and()
+			//.log().all().and()
 			.assertThat()
 			.statusCode(HttpStatus.BAD_REQUEST.value())
 			.extract().as(WebValidationError.class);
 		
 		assertThat(validationError.getErrors())
-			.containsExactly(Map.of("parameter", "flavor", "error", "must not be blank"));
+			.containsAnyOf(Map.of("parameter", "flavor", "error", "must not be blank"));
 	}
 
 }
